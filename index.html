@@ -1,0 +1,965 @@
+<!doctype html>
+<html lang="en" class="h-full w-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="J S K Enterprises - Premium B2B marketplace for electrical items and industrial products.">
+  <title>J S K Enterprises · Electricals B2B</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,700&display=swap');
+
+    html, body {
+      height: 100%;
+      width: 100%;
+      margin: 0;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Manrope, sans-serif;
+      background: #f4f7fb;
+      color: #122033;
+    }
+
+    .app-shell {
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background:
+        radial-gradient(circle at 12% 10%, rgba(38, 166, 154, 0.16), transparent 28%),
+        radial-gradient(circle at 80% 0%, rgba(20, 68, 132, 0.16), transparent 34%),
+        linear-gradient(135deg, #f4f7fb 0%, #ffffff 44%, #eef3f8 100%);
+      transition: background 0.35s ease, color 0.35s ease;
+    }
+
+    .dark-mode {
+      background:
+        radial-gradient(circle at 12% 10%, rgba(38, 166, 154, 0.15), transparent 28%),
+        radial-gradient(circle at 80% 0%, rgba(84, 142, 220, 0.18), transparent 34%),
+        linear-gradient(135deg, #071426 0%, #10243d 46%, #091522 100%);
+      color: #eef5ff;
+    }
+
+    /* Premium Dark Mode Specific Overrides */
+    .dark-mode header {
+      background: rgba(16, 36, 61, 0.8) !important;
+      border-color: rgba(129, 163, 207, 0.15) !important;
+    }
+    .dark-mode .nav-btn {
+      color: #cbd5e1 !important;
+    }
+    .dark-mode .nav-btn:hover {
+      background: rgba(255, 255, 255, 0.08) !important;
+      color: #ffffff !important;
+    }
+    .dark-mode #mobileMenu {
+      background: rgba(16, 36, 61, 0.95) !important;
+      border-color: rgba(129, 163, 207, 0.15) !important;
+    }
+    .dark-mode .mobile-nav {
+      color: #cbd5e1 !important;
+    }
+    .dark-mode .mobile-nav:hover {
+      background: rgba(255, 255, 255, 0.08) !important;
+      color: #ffffff !important;
+    }
+    .dark-mode footer {
+      background: rgba(16, 36, 61, 0.75) !important;
+      border-color: rgba(129, 163, 207, 0.15) !important;
+    }
+    .dark-mode select, .dark-mode input, .dark-mode textarea {
+      background: #101f30 !important;
+      border-color: rgba(129, 163, 207, 0.2) !important;
+      color: #eef5ff !important;
+    }
+    .dark-mode select option {
+      background: #10243d !important;
+      color: #eef5ff !important;
+    }
+    .dark-mode th {
+      border-color: rgba(129, 163, 207, 0.15) !important;
+      color: #a0aec0 !important;
+    }
+    .dark-mode tr {
+      border-color: rgba(129, 163, 207, 0.15) !important;
+    }
+    .dark-mode #heroTitle {
+      color: #ffffff !important;
+    }
+    .dark-mode #heroSubtitle {
+      color: #cbd5e1 !important;
+    }
+    .dark-mode #navBusinessName {
+      color: #ffffff !important;
+    }
+    .dark-mode #footerBusinessName {
+      color: #ffffff !important;
+    }
+    .dark-mode #footerText {
+      color: #a0aec0 !important;
+    }
+
+    .brand-serif {
+      font-family: Fraunces, serif;
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.78);
+      backdrop-filter: blur(18px);
+      border: 1px solid rgba(206, 218, 232, 0.75);
+      box-shadow: 0 22px 60px rgba(13, 35, 66, 0.12);
+    }
+
+    .dark-mode .glass-card {
+      background: rgba(14, 31, 52, 0.76);
+      border-color: rgba(129, 163, 207, 0.18);
+      box-shadow: 0 22px 60px rgba(0, 0, 0, 0.32);
+    }
+
+    .premium-card {
+      transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+    }
+
+    .premium-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 24px 52px rgba(13, 35, 66, 0.16);
+      border-color: rgba(38, 166, 154, 0.5);
+    }
+
+    .product-art {
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.72), rgba(255,255,255,0.1)),
+        radial-gradient(circle at 28% 26%, rgba(38,166,154,0.34), transparent 24%),
+        radial-gradient(circle at 70% 72%, rgba(17,57,103,0.24), transparent 30%),
+        linear-gradient(135deg, #dfe8f2, #ffffff);
+    }
+
+    .dark-mode .product-art {
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02)),
+        radial-gradient(circle at 28% 26%, rgba(38,166,154,0.34), transparent 24%),
+        radial-gradient(circle at 70% 72%, rgba(84,142,220,0.25), transparent 30%),
+        linear-gradient(135deg, #18304d, #0d1b2d);
+    }
+
+    .fade-up {
+      animation: fadeUp 0.7s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .slide-in {
+      animation: slideIn 0.35s ease both;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .focus-ring:focus {
+      outline: 3px solid rgba(38, 166, 154, 0.45);
+      outline-offset: 3px;
+    }
+
+    .scrollbar-soft::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    .scrollbar-soft::-webkit-scrollbar-thumb {
+      background: rgba(21, 64, 112, 0.25);
+      border-radius: 999px;
+    }
+
+    .whatsapp-btn {
+      background: #25D366 !important;
+      border-color: #25D366 !important;
+      color: white !important;
+    }
+    .call-btn {
+      background: #113967 !important;
+      border-color: #113967 !important;
+      color: white !important;
+    }
+    .whatsapp-btn:hover { background: #1da85c !important; }
+    .call-btn:hover { background: #0b2a4f !important; }
+
+    /* carousel */
+    .carousel-track {
+      display: flex;
+      transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      gap: 1.25rem;
+    }
+    .carousel-slide {
+      min-width: calc(33.333% - 0.9rem);
+      flex-shrink: 0;
+    }
+    @media (max-width: 768px) {
+      .carousel-slide { min-width: calc(50% - 0.7rem); }
+    }
+    @media (max-width: 480px) {
+      .carousel-slide { min-width: calc(100% - 0rem); }
+    }
+    .carousel-btn {
+      background: rgba(255,255,255,0.7);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,0.3);
+      transition: 0.2s;
+    }
+    .carousel-btn:hover { background: white; }
+    .dark-mode .carousel-btn { background: rgba(20,40,70,0.7); border-color: rgba(255,255,255,0.1); }
+    .dark-mode .carousel-btn:hover { background: #1a3050; }
+
+    .product-grid-card {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    .product-grid-card .card-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .product-grid-card .card-actions {
+      margin-top: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .product-grid-card .card-actions .btn-row {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .product-grid-card .card-actions .btn-row button {
+      flex: 1;
+    }
+
+    .request-call-popup {
+      background: white;
+      border-radius: 1.5rem;
+      padding: 1.5rem;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+      border: 1px solid rgba(0,0,0,0.05);
+      max-width: 340px;
+      width: 100%;
+    }
+    .dark-mode .request-call-popup {
+      background: #1a2a40;
+      border-color: rgba(255,255,255,0.1);
+    }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full w-full">
+  <div id="appShell" class="app-shell">
+   <header class="sticky top-0 z-40 border-b border-slate-200/70 bg-white/78 backdrop-blur-xl dark-aware-header">
+    <nav class="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8" aria-label="Main navigation">
+     <button id="brandHome" class="focus-ring flex items-center gap-3 rounded-xl text-left" type="button">
+      <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#113967] text-white shadow-lg shadow-blue-900/20">
+       <i data-lucide="cpu" class="h-5 w-5"></i>
+      </div>
+      <div>
+       <p id="navBusinessName" class="text-base font-extrabold tracking-tight text-[#122033]">J S K Enterprises</p>
+       <p class="text-xs font-semibold uppercase tracking-[0.22em] text-[#26a69a]">B2B Electricals items marketplace</p>
+      </div></button>      <div class="hidden items-center gap-2 lg:flex">
+       <button class="nav-btn focus-ring rounded-full px-4 py-2 text-sm font-bold text-slate-700 hover:bg-slate-100" data-view="home" type="button">Home</button>
+       <a href="/blog" class="nav-btn focus-ring rounded-full px-4 py-2 text-sm font-bold text-slate-700 hover:bg-slate-100">Blog</a> 
+       <button class="nav-btn focus-ring rounded-full px-4 py-2 text-sm font-bold text-slate-700 hover:bg-slate-100" data-view="marketplace" type="button">Marketplace</button> 
+       <button class="nav-btn focus-ring rounded-full px-4 py-2 text-sm font-bold text-slate-700 hover:bg-slate-100" data-view="login" type="button">Admin</button>
+       <button id="themeToggle" class="focus-ring rounded-full bg-slate-100 p-2 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-white dark:hover:bg-slate-700" type="button" aria-label="Toggle theme">
+         <span class="flex items-center gap-2"><i data-lucide="moon" class="h-4 w-4"></i></span>
+       </button>
+
+       <button class="focus-ring rounded-full bg-[#25D366] px-4 py-2 text-sm font-bold text-white flex items-center gap-2 hover:bg-[#1da85c]" type="button" id="headerWhatsappBtn">
+         <i data-lucide="message-circle" class="h-4 w-4"></i> Get Best Price
+       </button>
+      </div>
+      <div class="flex items-center gap-2">
+       <button id="themeToggleMobile" class="focus-ring rounded-full bg-slate-100 p-2 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-white dark:hover:bg-slate-700 lg:hidden" type="button" aria-label="Toggle theme">
+         <i data-lucide="moon" class="h-5 w-5"></i>
+       </button>
+       <button id="mobileMenuBtn" class="focus-ring rounded-full border border-slate-200 bg-white p-2 text-slate-700 shadow-sm lg:hidden" type="button" aria-label="Open menu"> <i data-lucide="menu" class="h-5 w-5"></i> </button>
+      </div>
+     </nav>
+     <div id="mobileMenu" class="hidden border-t border-slate-200 bg-white/95 px-4 py-3 lg:hidden">
+      <div class="grid gap-2">
+       <button class="mobile-nav focus-ring rounded-xl px-4 py-3 text-left font-bold text-slate-700 hover:bg-slate-100" data-view="home" type="button">Home</button>
+       <a href="/blog" class="mobile-nav focus-ring rounded-xl px-4 py-3 text-left font-bold text-slate-700 hover:bg-slate-100 block">Blog</a> 
+       <button class="mobile-nav focus-ring rounded-xl px-4 py-3 text-left font-bold text-slate-700 hover:bg-slate-100" data-view="marketplace" type="button">Marketplace</button> 
+       <button class="mobile-nav focus-ring rounded-xl px-4 py-3 text-left font-bold text-slate-700 hover:bg-slate-100" data-view="login" type="button">Admin</button>
+
+       <button class="focus-ring rounded-xl bg-[#25D366] px-4 py-3 text-left font-bold text-white flex items-center gap-2" type="button" id="mobileHeaderWhatsapp">
+         <i data-lucide="message-circle" class="h-4 w-4"></i> Get Best Price
+       </button>
+      </div>
+     </div>
+    </header>
+   <main id="mainContent" class="w-full">
+    <section id="homeView" class="view-section">
+     <div class="mx-auto grid w-full max-w-7xl gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:px-8 lg:py-16">
+      <div class="fade-up flex flex-col justify-center">
+       <div class="mb-5 inline-flex w-fit items-center gap-2 rounded-full border border-[#26a69a]/30 bg-[#26a69a]/10 px-4 py-2 text-sm font-extrabold text-[#0f766e]">
+        <span class="h-2 w-2 rounded-full bg-[#26a69a]"></span> Electrical items sourcing
+       </div>
+       <h1 id="heroTitle" class="brand-serif max-w-3xl text-4xl font-bold leading-tight text-[#10243d] sm:text-5xl lg:text-6xl">B2B Electricals items marketplace</h1>
+       <p id="heroSubtitle" class="mt-5 max-w-2xl text-lg leading-8 text-slate-600">Premium B2B sourcing for LED Bulbs, LED Tube lights, Flood Lights, Switches, Sockets, Buttons and more. Browse verified listings and connect instantly.</p>
+       <form id="heroSearchForm" class="mt-8 flex w-full max-w-2xl flex-col gap-3 rounded-3xl border border-slate-200 bg-white p-2 shadow-xl shadow-slate-900/8 sm:flex-row">
+        <label for="heroSearch" class="sr-only">Search products</label>
+        <div class="flex flex-1 items-center gap-3 px-3">
+         <i data-lucide="search" class="h-5 w-5 text-slate-400"></i> <input id="heroSearch" class="w-full rounded-2xl bg-transparent px-2 py-3 text-slate-800 outline-none" placeholder="Search LED Bulbs, Tube lights, switches...">
+        </div><button class="focus-ring rounded-2xl bg-[#113967] px-6 py-3 font-extrabold text-white transition hover:bg-[#0b2a4f]" type="submit">Search</button>
+       </form>
+       <div class="mt-8 grid max-w-2xl grid-cols-3 gap-3">
+        <div class="glass-card rounded-3xl p-4">
+         <p class="text-2xl font-extrabold text-[#113967] dark:text-teal-400">50+</p>
+         <p class="text-xs font-bold uppercase tracking-wide text-slate-500">Items</p>
+        </div>
+        <div class="glass-card rounded-3xl p-4">
+         <p class="text-2xl font-extrabold text-[#113967] dark:text-teal-400">12h</p>
+         <p class="text-xs font-bold uppercase tracking-wide text-slate-500">Response</p>
+        </div>
+        <div class="glass-card rounded-3xl p-4">
+         <p class="text-2xl font-extrabold text-[#113967] dark:text-teal-400">B2B</p>
+         <p class="text-xs font-bold uppercase tracking-wide text-slate-500">Supply</p>
+        </div>
+       </div>
+      </div>
+      <div class="fade-up glass-card relative overflow-hidden rounded-[2rem] p-5" style="animation-delay: .12s;">
+       <div class="absolute right-5 top-5 rounded-full bg-[#26a69a] px-4 py-2 text-sm font-extrabold text-white shadow-lg">
+        Offer Live
+       </div>
+       <div class="product-art flex aspect-[4/3] items-center justify-center rounded-[1.5rem]">
+        <svg width="78%" height="78%" viewbox="0 0 500 360" role="img" aria-label="Electronic components illustration">
+         <rect x="55" y="115" width="140" height="150" rx="22" fill="#113967" opacity="0.95" /> <rect x="78" y="92" width="94" height="42" rx="18" fill="#26a69a" /> <rect x="220" y="72" width="190" height="220" rx="30" fill="#ffffff" opacity="0.86" /> <rect x="250" y="110" width="130" height="28" rx="14" fill="#113967" opacity="0.9" /> <rect x="250" y="158" width="96" height="18" rx="9" fill="#26a69a" /> <rect x="250" y="194" width="120" height="18" rx="9" fill="#cbd5e1" /> <circle cx="133" cy="292" r="28" fill="#26a69a" /> <circle cx="365" cy="292" r="28" fill="#26a69a" /> <path d="M90 265h320" stroke="#10243d" stroke-width="12" stroke-linecap="round" />
+        </svg>
+       </div>
+       <div class="mt-5">
+        <button class="contact-whatsapp whatsapp-btn focus-ring rounded-2xl px-5 py-4 font-extrabold text-white transition w-full" type="button"> <span class="flex items-center justify-center gap-2"><i data-lucide="message-circle" class="h-5 w-5"></i> WhatsApp Inquiry</span> </button>
+       </div>
+      </div>
+     </div>
+     <!-- Featured Carousel -->
+     <section class="mx-auto w-full max-w-7xl px-4 pb-10 sm:px-6 lg:px-8">
+      <div class="mb-5 flex items-end justify-between">
+       <div>
+        <p class="font-extrabold uppercase tracking-[0.22em] text-[#26a69a]">Featured</p>
+        <h2 class="mt-2 text-3xl font-extrabold text-[#10243d] dark:text-white">Featured items</h2>
+       </div>
+       <div class="flex gap-2">
+        <button id="carouselPrev" class="carousel-btn rounded-full p-2 shadow-sm" type="button"><i data-lucide="chevron-left" class="h-5 w-5"></i></button>
+        <button id="carouselNext" class="carousel-btn rounded-full p-2 shadow-sm" type="button"><i data-lucide="chevron-right" class="h-5 w-5"></i></button>
+       </div>
+      </div>
+      <div class="overflow-hidden rounded-3xl">
+        <div id="carouselTrack" class="carousel-track animate-all"></div>
+      </div>
+      <div class="mt-8 flex justify-center">
+        <button class="focus-ring rounded-2xl bg-[#113967] px-8 py-4 font-extrabold text-white transition hover:bg-[#0b2a4f] shadow-lg shadow-blue-900/10 flex items-center gap-2" id="featuredViewMore" type="button">
+          View More Items <i data-lucide="arrow-right" class="h-5 w-5"></i>
+        </button>
+      </div>
+     </section>
+     <section class="mx-auto w-full max-w-7xl px-4 pb-10 sm:px-6 lg:px-8">
+      <div class="mb-5 flex items-end justify-between gap-4">
+       <div>
+        <p class="font-extrabold uppercase tracking-[0.22em] text-[#26a69a]">Categories</p>
+        <h2 class="mt-2 text-3xl font-extrabold text-[#10243d] dark:text-white">Browse electrical categories</h2>
+       </div><button class="focus-ring hidden rounded-full border border-slate-200 bg-white px-5 py-3 font-extrabold text-slate-700 hover:bg-slate-50 sm:block dark:bg-slate-800 dark:border-slate-700 dark:text-white dark:hover:bg-slate-700" data-view-trigger="marketplace" type="button">View all</button>
+      </div>
+      <div id="categoryGrid" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4"></div>
+     </section>
+     <section class="mx-auto w-full max-w-7xl px-4 pb-14 sm:px-6 lg:px-8">
+      <div class="glass-card rounded-[2rem] p-6 sm:p-8">
+       <div class="grid gap-6 lg:grid-cols-3">
+        <div>
+         <p class="font-extrabold uppercase tracking-[0.22em] text-[#26a69a]">Why choose us</p>
+         <h2 class="mt-2 text-3xl font-extrabold text-[#10243d] dark:text-white">Premium service for serious buyers</h2>
+        </div>
+        <div class="lg:col-span-2 grid gap-4 sm:grid-cols-2">
+         <div class="rounded-3xl bg-white/70 p-5 dark:bg-slate-800/40">
+          <i data-lucide="badge-check" class="h-7 w-7 text-[#26a69a]"></i>
+          <h3 class="mt-3 text-lg font-extrabold dark:text-white">Verified item listings</h3>
+          <p class="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-400">Clear specs, datasheets, pricing and direct enquiry options.</p>
+         </div>
+         <div class="rounded-3xl bg-white/70 p-5 dark:bg-slate-800/40">
+          <i data-lucide="truck" class="h-7 w-7 text-[#26a69a]"></i>
+          <h3 class="mt-3 text-lg font-extrabold dark:text-white">Industrial supply focus</h3>
+          <p class="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-400">Designed for bulk sourcing, repeat orders and trade buyers.</p>
+         </div>
+         <div class="rounded-3xl bg-white/70 p-5 dark:bg-slate-800/40">
+          <i data-lucide="phone-forwarded" class="h-7 w-7 text-[#26a69a]"></i>
+          <h3 class="mt-3 text-lg font-extrabold dark:text-white">Direct contact model</h3>
+          <p class="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-400">No payment gateway. Buyers contact directly by call, WhatsApp or enquiry.</p>
+         </div>
+         <div class="rounded-3xl bg-white/70 p-5 dark:bg-slate-800/40">
+          <i data-lucide="layout-dashboard" class="h-7 w-7 text-[#26a69a]"></i>
+          <h3 class="mt-3 text-lg font-extrabold dark:text-white">Scalable admin workflow</h3>
+          <p class="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-400">Product, offer, category and masters structure planned for future backend.</p>
+         </div>
+        </div>
+       </div>
+      </div>
+     </section>
+    </section>
+    <section id="marketplaceView" class="view-section hidden">
+     <div class="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <div class="mb-6 rounded-[2rem] bg-[#10243d] p-6 text-white shadow-2xl shadow-blue-950/20 sm:p-8">
+       <div class="grid gap-5 lg:grid-cols-[1fr_420px] lg:items-center">
+        <div>
+         <p class="font-extrabold uppercase tracking-[0.22em] text-[#26a69a]">Marketplace</p>
+         <h1 class="mt-2 text-4xl font-extrabold">J S K Enterprises</h1>
+         <p class="mt-3 max-w-2xl text-blue-100">Search, filter, save favorites and contact J S K Enterprises directly.</p>
+        </div>
+        <form id="catalogSearchForm" class="rounded-3xl bg-white p-2 dark:bg-slate-850">
+         <label for="catalogSearch" class="sr-only">Search catalog</label>
+         <div class="flex items-center gap-2">
+          <input id="catalogSearch" class="flex-1 rounded-2xl px-4 py-3 text-slate-800 outline-none dark:bg-transparent dark:text-white" placeholder="Search items..."> <button class="focus-ring rounded-2xl bg-[#26a69a] px-5 py-3 font-extrabold text-white" type="submit"><i data-lucide="search" class="h-5 w-5"></i></button>
+         </div>
+        </form>
+       </div>
+      </div>
+      <div class="grid gap-6 lg:grid-cols-[260px_1fr]">
+       <aside class="glass-card h-fit rounded-[2rem] p-5">
+        <h2 class="text-lg font-extrabold dark:text-white">Filters</h2>
+        <div class="mt-5">
+         <label for="categoryFilter" class="mb-2 block text-sm font-extrabold text-slate-600 dark:text-slate-400">Category</label> <select id="categoryFilter" class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 outline-none dark:bg-slate-800 dark:border-slate-700 dark:text-white"> <option value="All">All categories</option> </select>
+        </div>
+        <div class="mt-5">
+         <label for="sortFilter" class="mb-2 block text-sm font-extrabold text-slate-600 dark:text-slate-400">Sort</label> <select id="sortFilter" class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 outline-none dark:bg-slate-800 dark:border-slate-700 dark:text-white"> <option value="featured">Featured first</option> <option value="priceLow">Price low to high</option> <option value="recent">Recently added</option> </select>
+        </div><button id="resetFilters" class="focus-ring mt-5 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 font-extrabold text-slate-700 hover:bg-slate-50 dark:bg-slate-800 dark:border-slate-700 dark:text-white dark:hover:bg-slate-700" type="button">Reset filters</button>
+       </aside>
+       <div>
+        <div class="mb-4 flex items-center justify-between">
+         <p id="resultCount" class="font-bold text-slate-600 dark:text-slate-400">Showing products</p>
+         <p class="rounded-full bg-[#26a69a]/15 px-4 py-2 text-sm font-extrabold text-[#0f766e] dark:bg-[#26a69a]/20 dark:text-[#2dd4bf]">Scroll down to load more</p>
+        </div>
+        <div id="productGrid" class="grid gap-5 md:grid-cols-2 xl:grid-cols-3"></div>
+        <div class="mt-8 flex justify-center">
+         <button id="loadMoreBtn" class="focus-ring rounded-2xl bg-[#113967] px-6 py-4 font-extrabold text-white transition hover:bg-[#0b2a4f]" type="button">Load more products</button>
+        </div>
+       </div>
+      </div>
+     </div>
+    </section>
+    <section id="detailsView" class="view-section hidden">
+     <div class="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <button id="backToCatalog" class="focus-ring mb-5 inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-3 font-extrabold text-slate-700 hover:bg-slate-50 dark:bg-slate-800 dark:border-slate-700 dark:text-white dark:hover:bg-slate-700" type="button"> <i data-lucide="arrow-left" class="h-4 w-4"></i> Back to marketplace </button>
+      <div id="productDetails"></div>
+     </div>
+    </section>
+    <section id="loginView" class="view-section hidden flex items-center justify-center min-h-[60vh] py-12 px-4 sm:px-6 lg:px-8">
+      <div class="glass-card max-w-md w-full rounded-[2rem] p-8 shadow-2xl space-y-6">
+       <div class="text-center">
+        <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[#113967] text-white shadow-lg mb-4">
+         <i data-lucide="shield-alert" class="h-7 w-7"></i>
+        </div>
+        <h2 class="brand-serif text-3xl font-extrabold text-[#10243d] dark:text-white">Admin Authentication</h2>
+        <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">J S K Enterprises B2B Portal</p>
+       </div>
+       <form id="adminLoginForm" class="space-y-4">
+        <div id="loginError" class="hidden p-4 text-sm font-semibold text-rose-800 bg-rose-50 border border-rose-200 rounded-2xl dark:bg-rose-950/20 dark:border-rose-900/50 dark:text-rose-250">
+          Invalid username or password. Please try again.
+        </div>
+        <div>
+         <label for="loginUser" class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-1">Username / Email</label>
+         <div class="relative flex items-center">
+           <i data-lucide="user" class="absolute left-4 h-5 w-5 text-slate-400"></i>
+           <input id="loginUser" type="text" required class="w-full rounded-2xl border border-slate-200 pl-12 pr-4 py-3 outline-none dark:bg-slate-700 dark:border-slate-650 dark:text-white" placeholder="admin@jsk.in">
+         </div>
+        </div>
+        <div>
+         <label for="loginPassword" class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-1">Password</label>
+         <div class="relative flex items-center">
+           <i data-lucide="lock" class="absolute left-4 h-5 w-5 text-slate-400"></i>
+           <input id="loginPassword" type="password" required class="w-full rounded-2xl border border-slate-200 pl-12 pr-4 py-3 outline-none dark:bg-slate-700 dark:border-slate-650 dark:text-white" placeholder="••••••••">
+         </div>
+        </div>
+        <button type="submit" class="w-full rounded-2xl bg-[#113967] px-5 py-4 font-extrabold text-white hover:bg-[#0b2a4f] transition shadow-lg shadow-blue-950/20">Log In to Dashboard</button>
+       </form>
+      </div>
+     </section>
+    <section id="dashboardView" class="view-section hidden">
+     <div class="mx-auto grid w-full max-w-7xl gap-6 px-4 py-8 sm:px-6 lg:grid-cols-[280px_1fr] lg:px-8">
+      <aside class="glass-card rounded-[2rem] p-5">
+       <div class="mb-5 flex items-center gap-3">
+        <div class="rounded-2xl bg-[#113967] p-3 text-white"><i data-lucide="shield-check" class="h-5 w-5"></i>
+        </div>
+        <div>
+         <h1 class="text-xl font-extrabold dark:text-white">Admin Demo</h1>
+         <p class="text-sm text-slate-500">Safe preview workspace</p>
+        </div>
+       </div>
+       <div class="grid gap-2">
+         <button class="dash-tab focus-ring rounded-2xl bg-[#113967] px-4 py-3 text-left font-extrabold text-white" data-tab="overview" type="button">Overview</button>
+         <button class="dash-tab focus-ring rounded-2xl px-4 py-3 text-left font-extrabold text-slate-700 hover:bg-slate-100 dark:text-slate-350 dark:hover:bg-slate-800" data-tab="products" type="button">Products</button>
+         <button class="dash-tab focus-ring rounded-2xl px-4 py-3 text-left font-extrabold text-slate-700 hover:bg-slate-100 dark:text-slate-350 dark:hover:bg-slate-800" data-tab="blogs" type="button">Blogs</button>
+         <button class="dash-tab focus-ring rounded-2xl px-4 py-3 text-left font-extrabold text-slate-700 hover:bg-slate-100 dark:text-slate-350 dark:hover:bg-slate-800" data-tab="masters" type="button">Masters</button>
+         <button class="dash-tab focus-ring rounded-2xl px-4 py-3 text-left font-extrabold text-slate-700 hover:bg-slate-100 dark:text-slate-350 dark:hover:bg-slate-800" data-tab="users" type="button">Users</button>
+         <button id="adminLogoutBtn" class="focus-ring rounded-2xl px-4 py-3 text-left font-extrabold text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/20 mt-4 flex items-center gap-2" type="button">
+           <i data-lucide="log-out" class="h-4 w-4"></i> Logout
+         </button>
+        </div>
+      </aside>
+      <div class="space-y-6">
+       <div class="rounded-3xl border border-amber-200 bg-amber-50 p-4 text-sm font-semibold text-amber-900 dark:bg-amber-950/20 dark:border-amber-900/50 dark:text-amber-200">
+        Admin access is protected by Supabase Authentication and Row Level Security.
+       </div>
+       <div id="overviewPanel" class="dash-panel slide-in">
+        <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+         <div class="glass-card rounded-3xl p-5">
+          <p class="text-sm font-bold text-slate-500">Products</p>
+          <p class="mt-2 text-3xl font-extrabold text-[#113967] dark:text-teal-400">248</p>
+         </div>
+         <div class="glass-card rounded-3xl p-5">
+          <p class="text-sm font-bold text-slate-500">Categories</p>
+          <p class="mt-2 text-3xl font-extrabold text-[#113967] dark:text-teal-400">12</p>
+         </div>
+         <div class="glass-card rounded-3xl p-5">
+          <p class="text-sm font-bold text-slate-500">Inquiries</p>
+          <p class="mt-2 text-3xl font-extrabold text-[#113967] dark:text-teal-400">86</p>
+         </div>
+         <div class="glass-card rounded-3xl p-5">
+          <p class="text-sm font-bold text-slate-500">Offers Live</p>
+          <p class="mt-2 text-3xl font-extrabold text-[#113967] dark:text-teal-400">19</p>
+         </div>
+        </div>
+        <div class="glass-card mt-6 rounded-[2rem] p-6">
+         <h2 class="text-2xl font-extrabold dark:text-white">Analytics overview</h2>
+         <div class="mt-6 grid gap-3">
+          <div class="rounded-2xl bg-white/70 p-4 dark:bg-slate-800/50">
+           <div class="flex justify-between text-sm font-bold dark:text-white"><span>Catalog views</span><span>78%</span>
+           </div>
+           <div class="mt-3 h-3 rounded-full bg-slate-200 dark:bg-slate-700">
+            <div class="h-3 rounded-full bg-[#26a69a]" style="width:78%"></div>
+           </div>
+          </div>
+          <div class="rounded-2xl bg-white/70 p-4 dark:bg-slate-800/50">
+           <div class="flex justify-between text-sm font-bold dark:text-white"><span>WhatsApp clicks</span><span>64%</span>
+           </div>
+       <div class="mt-3 h-3 rounded-full bg-slate-200 dark:bg-slate-700">
+            <div class="h-3 rounded-full bg-[#113967]" style="width:64%"></div>
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+       <div id="productsPanel" class="dash-panel hidden slide-in">
+        <div class="glass-card rounded-[2rem] p-6 mb-6 hidden" id="productFormContainer">
+         <h3 class="text-xl font-extrabold mb-4 dark:text-white" id="productFormTitle">Add Product</h3>
+         <form id="adminProductForm" class="space-y-4">
+          <input type="hidden" id="prodId">
+          <div class="grid gap-4 sm:grid-cols-2">
+           <div>
+            <label for="prodName" class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-1">Product Name</label>
+            <input type="text" id="prodName" required class="w-full rounded-xl border border-slate-200 px-4 py-2 outline-none dark:bg-slate-700 dark:border-slate-600 dark:text-white">
+           </div>
+           <div>
+            <label for="prodCategory" class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-1">Category</label>
+            <select id="prodCategory" required class="w-full rounded-xl border border-slate-200 px-4 py-2 outline-none dark:bg-slate-700 dark:border-slate-600 dark:text-white">
+             <option value="Lighting Solutions">Lighting Solutions</option>
+             <option value="Switches & Sockets">Switches & Sockets</option>
+             <option value="Wires & Cables">Wires & Cables</option>
+             <option value="Protection Devices">Protection Devices</option>
+            </select>
+           </div>
+          </div>
+          <div class="grid gap-4 sm:grid-cols-3">
+           <div>
+            <label for="prodPrice" class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-1">Price (₹)</label>
+            <input type="number" id="prodPrice" required class="w-full rounded-xl border border-slate-200 px-4 py-2 outline-none dark:bg-slate-700 dark:border-slate-600 dark:text-white">
+           </div>
+           <div>
+            <label for="prodOffer" class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-1">Offer Expiry Date</label>
+            <input type="date" id="prodOffer" required class="w-full rounded-xl border border-slate-200 px-4 py-2 outline-none dark:bg-slate-700 dark:border-slate-600 dark:text-white">
+           </div>
+           <div>
+            <label for="prodImageFile" class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-1">Product Image (JPG/PNG)</label>
+            <input type="file" id="prodImageFile" accept="image/png, image/jpeg" class="w-full rounded-xl border border-slate-200 px-4 py-2 outline-none dark:bg-slate-700 dark:border-slate-600 dark:text-white">
+            <input type="hidden" id="prodImageBase64">
+            <div id="prodImagePreviewContainer" class="mt-2 hidden flex items-center gap-2">
+              <img id="prodImagePreview" src="" class="h-10 w-10 object-contain rounded-lg border border-slate-200">
+              <span class="text-xs text-slate-550">Image loaded</span>
+            </div>
+           </div>
+          </div>
+          <div>
+           <label for="prodDesc" class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-1">Description</label>
+           <textarea id="prodDesc" required class="w-full rounded-xl border border-slate-200 px-4 py-2 outline-none h-20 dark:bg-slate-700 dark:border-slate-600 dark:text-white"></textarea>
+          </div>
+          <div class="grid gap-4 sm:grid-cols-2">
+           <div>
+            <label for="prodSpecs" class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-1">Specifications (JSON format)</label>
+            <textarea id="prodSpecs" required class="w-full rounded-xl border border-slate-200 px-4 py-2 outline-none h-20 font-mono text-xs dark:bg-slate-700 dark:border-slate-600 dark:text-white" placeholder='{"Power": "12W", "Warranty": "1 Year"}'></textarea>
+           </div>
+           <div class="flex items-center">
+            <input type="checkbox" id="prodFeatured" class="h-5 w-5 rounded border-slate-200 text-[#113967]">
+            <label for="prodFeatured" class="ml-2 block text-sm font-bold text-slate-700 dark:text-slate-300">Featured Listing (Home Carousel)</label>
+           </div>
+          </div>
+          <div class="flex gap-2 justify-end">
+           <button type="button" id="cancelProductBtn" class="rounded-xl border border-slate-200 bg-white px-5 py-2 font-bold text-slate-700 hover:bg-slate-50 dark:bg-slate-800 dark:text-white dark:hover:bg-slate-700">Cancel</button>
+           <button type="submit" class="rounded-xl bg-[#26a69a] px-5 py-2 font-bold text-white hover:bg-[#1f877d]">Save Product</button>
+          </div>
+         </form>
+        </div>
+        <div class="glass-card rounded-[2rem] p-6">
+         <div class="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+          <div>
+           <h2 class="text-2xl font-extrabold dark:text-white">Product management</h2>
+           <p class="text-slate-500 dark:text-slate-400">Add, edit, delete and manage marketplace listings.</p>
+          </div><button id="addProductDemo" class="focus-ring rounded-2xl bg-[#26a69a] px-5 py-3 font-extrabold text-white hover:bg-[#1f877d]" type="button">Add product</button>
+         </div>
+         <div id="adminNotice" class="mt-4 hidden rounded-2xl bg-emerald-50 p-4 text-sm font-bold text-emerald-800 dark:bg-emerald-950/20 dark:text-emerald-350 dark:border dark:border-emerald-850">
+          Demo product form opened. In a real build, this connects to product storage.
+         </div>
+         <div class="mt-6 overflow-auto scrollbar-soft">
+          <table class="w-full min-w-[680px] text-left">
+           <thead>
+            <tr class="border-b border-slate-200 text-sm text-slate-500">
+             <th class="py-3">Product</th>
+             <th>Category</th>
+             <th>Price</th>
+             <th>Offer</th>
+             <th>Status</th>
+             <th>Actions</th>
+            </tr>
+           </thead>
+           <tbody id="adminProductRows"></tbody>
+          </table>
+         </div>
+        </div>
+       </div>
+       <div id="blogsPanel" class="dash-panel hidden slide-in">
+        <div class="glass-card rounded-[2rem] p-6 mb-6 hidden" id="blogFormContainer">
+         <h3 class="text-xl font-extrabold mb-4 dark:text-white" id="blogFormTitle">Add Blog Post</h3>
+         <form id="adminBlogForm" class="space-y-4">
+          <input type="hidden" id="blogId">
+          <div class="grid gap-4 sm:grid-cols-2">
+           <div>
+            <label for="blogTitle" class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-1">Blog Title</label>
+            <input type="text" id="blogTitle" required class="w-full rounded-xl border border-slate-200 px-4 py-2 outline-none dark:bg-slate-700 dark:border-slate-600 dark:text-white">
+           </div>
+           <div>
+            <label for="blogCategory" class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-1">Category</label>
+            <input type="text" id="blogCategory" required class="w-full rounded-xl border border-slate-200 px-4 py-2 outline-none dark:bg-slate-700 dark:border-slate-600 dark:text-white" placeholder="Safety & Innovation">
+           </div>
+          </div>
+          <div class="grid gap-4 sm:grid-cols-3">
+           <div>
+            <label for="blogIcon" class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-1">Icon Name (Lucide)</label>
+            <select id="blogIcon" required class="w-full rounded-xl border border-slate-200 px-4 py-2 outline-none dark:bg-slate-700 dark:border-slate-600 dark:text-white">
+              <option value="lightbulb">lightbulb</option>
+              <option value="power">power</option>
+              <option value="shield">shield</option>
+              <option value="plug">plug</option>
+              <option value="zap">zap</option>
+              <option value="book-open">book-open</option>
+            </select>
+           </div>
+           <div>
+            <label for="blogDate" class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-1">Publish Date</label>
+            <input type="date" id="blogDate" required class="w-full rounded-xl border border-slate-200 px-4 py-2 outline-none dark:bg-slate-700 dark:border-slate-600 dark:text-white">
+           </div>
+           <div>
+            <label for="blogImageFile" class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-1">Blog Image (JPG/PNG)</label>
+            <input type="file" id="blogImageFile" accept="image/png, image/jpeg" class="w-full rounded-xl border border-slate-200 px-4 py-2 outline-none dark:bg-slate-700 dark:border-slate-600 dark:text-white">
+            <input type="hidden" id="blogImageBase64">
+            <div id="blogImagePreviewContainer" class="mt-2 hidden flex items-center gap-2">
+              <img id="blogImagePreview" src="" class="h-10 w-10 object-contain rounded-lg border border-slate-200">
+              <span class="text-xs text-slate-555">Image loaded</span>
+            </div>
+           </div>
+          </div>
+          <div>
+           <label for="blogDesc" class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-1">Short Summary (for Card)</label>
+           <textarea id="blogDesc" required class="w-full rounded-xl border border-slate-200 px-4 py-2 outline-none h-16 dark:bg-slate-700 dark:border-slate-600 dark:text-white"></textarea>
+          </div>
+          <div>
+           <label for="blogContent" class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-1">Full Article Content</label>
+           <textarea id="blogContent" required class="w-full rounded-xl border border-slate-200 px-4 py-2 outline-none h-40 dark:bg-slate-700 dark:border-slate-600 dark:text-white" placeholder="Write full article here..."></textarea>
+          </div>
+          <div class="flex gap-2 justify-end">
+           <button type="button" id="cancelBlogBtn" class="rounded-xl border border-slate-200 bg-white px-5 py-2 font-bold text-slate-700 hover:bg-slate-50 dark:bg-slate-800 dark:text-white dark:hover:bg-slate-700">Cancel</button>
+           <button type="submit" class="rounded-xl bg-[#26a69a] px-5 py-2 font-bold text-white hover:bg-[#1f877d]">Save Blog</button>
+          </div>
+         </form>
+        </div>
+        <div class="glass-card rounded-[2rem] p-6">
+         <div class="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+          <div>
+           <h2 class="text-2xl font-extrabold dark:text-white">Blog management</h2>
+           <p class="text-slate-500 dark:text-slate-400">Add, edit, delete and manage J S K Enterprises blogs.</p>
+          </div>
+          <button id="addBlogBtn" class="focus-ring rounded-2xl bg-[#26a69a] px-5 py-3 font-extrabold text-white hover:bg-[#1f877d]" type="button">Add blog post</button>
+         </div>
+         <div class="mt-6 overflow-auto scrollbar-soft">
+          <table class="w-full min-w-[680px] text-left">
+           <thead>
+            <tr class="border-b border-slate-200 text-sm text-slate-500">
+             <th class="py-3">Title</th>
+             <th>Category</th>
+             <th>Date</th>
+             <th>Actions</th>
+            </tr>
+           </thead>
+           <tbody id="adminBlogRows"></tbody>
+          </table>
+         </div>
+        </div>
+       </div>
+       <div id="mastersPanel" class="dash-panel hidden slide-in">
+        <div class="glass-card rounded-[2rem] p-6">
+         <h2 class="text-2xl font-extrabold dark:text-white">Masters module</h2>
+         <p class="mt-2 text-slate-500 dark:text-slate-400">Flexible controls for custom attributes, categories, brands, units and specifications.</p>
+         <div class="mt-6 grid gap-4 md:grid-cols-2">
+          <div class="rounded-3xl bg-white/75 p-5 dark:bg-slate-800/40">
+           <h3 class="font-extrabold dark:text-white">Dynamic product fields</h3>
+           <div id="fieldList" class="mt-4 grid gap-2"></div>
+           <form id="fieldForm" class="mt-4 flex gap-2">
+            <label for="fieldName" class="sr-only">New field name</label> <input id="fieldName" required class="flex-1 rounded-2xl border border-slate-200 px-4 py-3 outline-none dark:bg-slate-700 dark:border-slate-600 dark:text-white" placeholder="Add field e.g. Thickness"> <button class="focus-ring rounded-2xl bg-[#113967] px-4 py-3 font-extrabold text-white" type="submit">Add</button>
+           </form>
+          </div>
+          <div class="rounded-3xl bg-white/75 p-5 dark:bg-slate-800/40">
+           <h3 class="font-extrabold dark:text-white">Suggested database structure</h3>
+           <ul class="mt-4 space-y-3 text-sm leading-6 text-slate-600 dark:text-slate-400">
+            <li><strong>products:</strong> name, description, category, price, offerTill, images, specs</li>
+            <li><strong>categories:</strong> title, icon, status</li>
+            <li><strong>masters:</strong> fieldName, fieldType, unit, required</li>
+            <li><strong>inquiries:</strong> productId, name, phone, message, date</li>
+            <li><strong>users:</strong> name, phone, role, favorites</li>
+           </ul>
+          </div>
+         </div>
+        </div>
+       </div>
+       <div id="usersPanel" class="dash-panel hidden slide-in">
+        <div class="glass-card rounded-[2rem] p-6">
+         <h2 class="text-2xl font-extrabold dark:text-white">User management preview</h2>
+         <p class="mt-2 text-slate-500 dark:text-slate-400">Role-based list concept for admin and marketplace users. No password fields are collected here.</p>
+         <div class="mt-6 grid gap-4 md:grid-cols-3">
+          <div class="rounded-3xl bg-white/75 p-5 dark:bg-slate-800/40">
+           <p class="font-extrabold dark:text-white">Admin role</p>
+           <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">Manage catalog, masters and inquiries.</p>
+          </div>
+          <div class="rounded-3xl bg-white/75 p-5 dark:bg-slate-800/40">
+           <p class="font-extrabold dark:text-white">Buyer role</p>
+           <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">Browse, save favorites and send inquiries.</p>
+          </div>
+          <div class="rounded-3xl bg-white/75 p-5 dark:bg-slate-800/40">
+           <p class="font-extrabold dark:text-white">Notifications</p>
+           <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">New inquiry and offer expiry alerts.</p>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </section>
+    <section id="flowsView" class="view-section hidden">
+     <div class="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <div class="grid gap-6 lg:grid-cols-2">
+       <div class="glass-card rounded-[2rem] p-6">
+        <h1 class="text-3xl font-extrabold dark:text-white">Admin workflow</h1>
+        <ol class="mt-6 space-y-4">
+         <li class="rounded-2xl bg-white/75 p-4 dark:bg-slate-800/40 dark:text-white"><strong>1. Create masters:</strong> categories, brands, units and custom fields.</li>
+         <li class="rounded-2xl bg-white/75 p-4 dark:bg-slate-800/40 dark:text-white"><strong>2. Add products:</strong> upload images, price, specs and offer dates.</li>
+         <li class="rounded-2xl bg-white/75 p-4 dark:bg-slate-800/40 dark:text-white"><strong>3. Manage listings:</strong> feature products, update stock status and edit offers.</li>
+         <li class="rounded-2xl bg-white/75 p-4 dark:bg-slate-800/40 dark:text-white"><strong>4. Handle inquiries:</strong> call back buyers and continue on WhatsApp.</li>
+        </ol>
+       </div>
+       <div class="glass-card rounded-[2rem] p-6">
+        <h2 class="text-3xl font-extrabold dark:text-white">User flow</h2>
+        <ol class="mt-6 space-y-4">
+         <li class="rounded-2xl bg-white/75 p-4 dark:bg-slate-800/40 dark:text-white"><strong>1. Visit marketplace:</strong> search or browse by category.</li>
+         <li class="rounded-2xl bg-white/75 p-4 dark:bg-slate-800/40 dark:text-white"><strong>2. Compare products:</strong> view price, specifications and offer timer.</li>
+         <li class="rounded-2xl bg-white/75 p-4 dark:bg-slate-800/40 dark:text-white"><strong>3. Save favorites:</strong> shortlist products for later.</li>
+         <li class="rounded-2xl bg-white/75 p-4 dark:bg-slate-800/40 dark:text-white"><strong>4. Contact directly:</strong> call, WhatsApp or send inquiry form.</li>
+        </ol>
+       </div>
+      </div>
+     </div>
+    </section>
+    <section id="termsView" class="view-section hidden">
+     <div class="mx-auto w-full max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
+      <button id="backFromTerms" class="focus-ring mb-6 inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-3 font-extrabold text-slate-700 hover:bg-slate-50 dark:bg-slate-800 dark:border-slate-700 dark:text-white dark:hover:bg-slate-700" type="button"> 
+        <i data-lucide="arrow-left" class="h-4 w-4"></i> Back to Home
+      </button>
+      <article class="glass-card rounded-[2rem] p-6 sm:p-10 text-[#122033] dark:text-slate-350">
+        <h1 class="brand-serif text-4xl font-extrabold text-[#10243d] dark:text-white mb-2">Terms & Conditions</h1>
+        <p class="text-sm text-slate-500 dark:text-slate-400 mb-6"><strong>Last Updated:</strong> 27th June 2026</p>
+        <hr class="border-slate-200 dark:border-slate-700 my-6" />
+        
+        <div class="space-y-8 text-base leading-7">
+          <div>
+            <h2 class="text-2xl font-bold text-[#10243d] dark:text-white mb-3">1. Eligibility</h2>
+            <p>You must be <strong>at least 18 years of age</strong> and legally capable of entering into binding agreements to use this website.</p>
+            <p class="mt-2">If you are accessing this website on behalf of a company or organization, you represent that you have the authority to bind that organization to these Terms.</p>
+          </div>
+          
+          <div>
+            <h2 class="text-2xl font-bold text-[#10243d] dark:text-white mb-3">2. Nature of Service</h2>
+            <p>J S K Enterprises operates as a <strong>Business-to-Business (B2B) electrical items marketplace</strong>.</p>
+            <p class="mt-2">Our website enables buyers to:</p>
+            <ul class="list-disc pl-5 mt-2 space-y-1">
+              <li>Browse product listings</li>
+              <li>View product specifications</li>
+              <li>Submit enquiries</li>
+              <li>Contact us via Call or WhatsApp</li>
+              <li>Request quotations</li>
+            </ul>
+            <p class="mt-2">We <strong>do not provide online payment processing</strong> through this website.</p>
+          </div>
+          
+          <div>
+            <h2 class="text-2xl font-bold text-[#10243d] dark:text-white mb-3">3. Product Information</h2>
+            <p>We strive to provide accurate information regarding products, specifications, pricing and availability.</p>
+            <p class="mt-2">However:</p>
+            <ul class="list-disc pl-5 mt-2 space-y-1">
+              <li>Product images are for illustration purposes only.</li>
+              <li>Prices are subject to change without prior notice.</li>
+              <li>Specifications may change without notice.</li>
+              <li>Product availability is not guaranteed.</li>
+              <li>Typographical or pricing errors may occur.</li>
+            </ul>
+            <p class="mt-2">J S K Enterprises reserves the right to correct any errors at any time.</p>
+          </div>
+          
+          <div>
+            <h2 class="text-2xl font-bold text-[#10243d] dark:text-white mb-3">4. Quotations & Pricing</h2>
+            <p>Prices displayed on this website are indicative only unless specifically stated otherwise.</p>
+            <p class="mt-2">Final pricing, GST, freight charges, delivery schedules and commercial terms shall be confirmed separately through official quotations or written communication.</p>
+            <p class="mt-2">Submission of an enquiry does not constitute a purchase agreement.</p>
+          </div>
+          
+          <div>
+            <h2 class="text-2xl font-bold text-[#10243d] dark:text-white mb-3">5. No Warranty</h2>
+            <p>Unless specifically agreed in writing, all products and services are provided on an "As Available" and "As Is" basis.</p>
+          </div>
+          
+          <div>
+            <h2 class="text-2xl font-bold text-[#10243d] dark:text-white mb-3">6. User Responsibilities</h2>
+            <p>Users agree that they shall not:</p>
+            <ul class="list-disc pl-5 mt-2 space-y-1">
+              <li>provide false or misleading information</li>
+              <li>impersonate any individual or business</li>
+              <li>submit fraudulent enquiries</li>
+              <li>misuse contact forms</li>
+              <li>attempt unauthorized access to our systems</li>
+              <li>interfere with website security</li>
+              <li>distribute malware, viruses or harmful code</li>
+              <li>scrape, copy or harvest website content using bots without permission</li>
+              <li>use this website for unlawful purposes</li>
+            </ul>
+            <p class="mt-2">Violation may result in permanent restriction of access and legal action.</p>
+          </div>
+          
+          <div>
+            <h2 class="text-2xl font-bold text-[#10243d] dark:text-white mb-3">9. Limitation of Liability</h2>
+            <p>To the maximum extent permitted by applicable law, J S K Enterprises shall not be liable for any indirect, incidental, consequential damages, business interruption, loss of profits, loss of business opportunities, data loss, procurement delays, manufacturing losses, or installation failures arising from:</p>
+            <ul class="list-disc pl-5 mt-2 space-y-1">
+              <li>use of this website</li>
+              <li>inability to access the website</li>
+              <li>reliance on website information</li>
+              <li>product availability</li>
+              <li>communication delays</li>
+            </ul>
+            <p class="mt-2">Use of this website is entirely at your own risk.</p>
+          </div>
+          
+          <div>
+            <h2 class="text-2xl font-bold text-[#10243d] dark:text-white mb-3">10. Technical Availability</h2>
+            <p>We do not guarantee uninterrupted operation of the website. Maintenance, server failures, internet issues or technical problems may temporarily affect website availability.</p>
+          </div>
+          
+          <div>
+            <h2 class="text-2xl font-bold text-[#10243d] dark:text-white mb-3">11. Communications</h2>
+            <p>By submitting your phone number, email address or enquiry through this website, you consent to receive communications from J S K Enterprises through Phone Calls, SMS, RCS Messages, WhatsApp, WhatsApp Business API, Email, and Push Notifications (if applicable).</p>
+            <p class="mt-2">These communications may include quotation responses, enquiry updates, product recommendations, promotional campaigns, new arrivals, special offers, and service announcements.</p>
+            <p class="mt-2">You may opt out of promotional communications at any time by contacting us or following the unsubscribe instructions where applicable.</p>
+          </div>
+          
+          <div>
+            <h2 class="text-2xl font-bold text-[#10243d] dark:text-white mb-3">12. Privacy</h2>
+            <p>Information submitted through enquiry forms will be processed in accordance with our Privacy Policy. We take reasonable measures to protect your information but cannot guarantee absolute security over the internet.</p>
+          </div>
+          
+          <div>
+            <h2 class="text-2xl font-bold text-[#10243d] dark:text-white mb-3">13. Indemnification</h2>
+            <p>You agree to indemnify and hold harmless J S K Enterprises, its owners, employees and representatives against any claims, damages, liabilities, legal expenses or losses arising from your misuse of the website, violation of these Terms, violation of applicable laws, or infringement of third-party rights.</p>
+          </div>
+          
+          <div>
+            <h2 class="text-2xl font-bold text-[#10243d] dark:text-white mb-3">14. Force Majeure</h2>
+            <p>J S K Enterprises shall not be liable for delays or failure in performance caused by events beyond our reasonable control including natural disasters, war, strikes, government restrictions, internet outages or supplier disruptions.</p>
+          </div>
+          
+          <div>
+            <h2 class="text-2xl font-bold text-[#10243d] dark:text-white mb-3">15. Changes to Terms</h2>
+            <p>J S K Enterprises reserves the right to modify these Terms & Conditions at any time without prior notice. Updated terms become effective immediately upon publication on this website. Continued use of the website constitutes acceptance of the revised Terms.</p>
+          </div>
+          
+          <div>
+            <h2 class="text-2xl font-bold text-[#10243d] dark:text-white mb-3">17. Contact Us</h2>
+            <p>For any questions regarding these Terms & Conditions, please contact:</p>
+            <p class="mt-2 font-bold">J S K Enterprises</p>
+            <p>Website: <a href="https://www.yourdomain.com" class="text-[#26a69a] hover:underline" target="_blank">https://www.yourdomain.com</a></p>
+          </div>
+        </div>
+      </article>
+     </div>
+    </section>
+    <section id="contactSection" class="mx-auto w-full max-w-7xl px-4 pb-10 sm:px-6 lg:px-8">
+     <div class="grid gap-6 rounded-[2rem] bg-[#10243d] p-6 text-white shadow-2xl shadow-blue-950/20 lg:grid-cols-[0.8fr_1.2fr] lg:p-8">
+      <div>
+       <p class="font-extrabold uppercase tracking-[0.22em] text-[#26a69a]">Contact</p>
+       <h2 class="mt-2 text-3xl font-extrabold">Need bulk pricing or custom specs?</h2>
+       <p class="mt-3 text-blue-100">Contact J S K Enterprises directly for electrical item requirements.</p>
+       <div class="mt-6">
+        <button class="contact-whatsapp whatsapp-btn focus-ring rounded-2xl px-5 py-4 font-extrabold text-white w-full" type="button"><span class="flex items-center justify-center gap-2"><i data-lucide="message-circle" class="h-5 w-5"></i> WhatsApp Chat</span></button>
+       </div>
+      </div>
+      <form id="inquiryForm" class="rounded-[1.5rem] bg-white p-5 text-slate-800 dark:bg-slate-850 dark:text-white">
+       <div id="formSuccess" class="mb-4 hidden rounded-2xl bg-emerald-50 p-4 text-sm font-bold text-emerald-800 dark:bg-emerald-950/20 dark:text-emerald-350 dark:border dark:border-emerald-800">
+        Thank you! Your inquiry is ready for follow-up. Please call or WhatsApp for fastest response.
+       </div>
+       <div class="grid gap-4 sm:grid-cols-2">
+        <div>
+         <label for="nameInput" class="mb-2 block text-sm font-extrabold">Name</label> <input id="nameInput" required class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none dark:bg-slate-700 dark:border-slate-650" placeholder="Your name">
+        </div>
+        <div>
+         <label for="phoneInput" class="mb-2 block text-sm font-extrabold">Phone</label> <input id="phoneInput" required class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none dark:bg-slate-700 dark:border-slate-650" placeholder="Your phone number">
+        </div>
+       </div>
+       <div class="mt-4">
+        <label for="messageInput" class="mb-2 block text-sm font-extrabold">Requirement</label> <textarea id="messageInput" required class="h-28 w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none dark:bg-slate-700 dark:border-slate-650" placeholder="Tell us what you need"></textarea>
+       </div><button class="focus-ring mt-4 w-full rounded-2xl bg-[#113967] px-5 py-4 font-extrabold text-white hover:bg-[#0b2a4f]" type="submit">Send Inquiry</button>
+      </form>
+     </div>
+    </section>
+   </main>
+   <footer class="border-t border-slate-200 bg-white/75">
+    <div class="mx-auto flex w-full max-w-7xl flex-col gap-4 px-4 py-8 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
+     <div>
+      <p id="footerBusinessName" class="text-lg font-extrabold text-[#10243d]">J S K Enterprises</p>
+      <p id="footerText" class="mt-1 text-sm text-slate-500">Trusted B2B marketplace for electrical items.</p>
+     </div>
+     <div class="flex items-center gap-6">
+      <button id="footerTermsLink" class="text-sm font-bold text-slate-550 hover:text-[#10243d] dark:text-slate-400 dark:hover:text-white transition focus-ring rounded-lg px-2 py-1" type="button">Terms & Conditions</button>
+      <div class="flex gap-3">
+       <button class="focus-ring rounded-full bg-slate-100 p-3 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-white dark:hover:bg-slate-700" type="button" aria-label="LinkedIn"><i data-lucide="linkedin" class="h-5 w-5"></i></button> <button class="focus-ring rounded-full bg-slate-100 p-3 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-white dark:hover:bg-slate-700" type="button" aria-label="Instagram"><i data-lucide="instagram" class="h-5 w-5"></i></button> <button class="focus-ring rounded-full bg-slate-100 p-3 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-white dark:hover:bg-slate-700" type="button" aria-label="Mail"><i data-lucide="mail" class="h-5 w-5"></i></button>
+      </div>
+     </div>
+    </div>
+   </footer>
+  </div>
+ 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/app.js"></script>
+ </body>
+</html>
