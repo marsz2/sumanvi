@@ -1244,6 +1244,22 @@ async function initApp() {
   initDashboard();
   initAdminAuth();
   initImagePreviews();
+  // MAIN NAVIGATION
+document.querySelectorAll(".nav-btn, .mobile-nav").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const view = btn.dataset.view;
+
+    if (view) {
+      showView(view);
+    }
+  });
+});
+
+
+
+
+
+  
 
   const trigger = document.querySelector('[data-view-trigger="marketplace"]');
   if (trigger) trigger.onclick = () => showView("marketplace");
