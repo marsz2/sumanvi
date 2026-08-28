@@ -1214,27 +1214,85 @@ Price: ${money(product.price)}`;
 // =====================================================
 // STARTUP
 // =====================================================
+
+// =====================================================
+// STARTUP
+// =====================================================
+
 async function initApp() {
+
+  // ---------------------------------------------------
+  // MAIN NAVIGATION
+  // Attach this FIRST so navigation works even if
+  // Supabase/data loading has an error.
+  // ---------------------------------------------------
+
+  document.querySelectorAll(".nav-btn, .mobile-nav").forEach(btn => {
+
+    btn.addEventListener("click", event => {
+
+      const view = btn.dataset.view;
+
+      if (view) {
+        showView(view);
+      }
+
+    });
+
+  });
+
+  // ---------------------------------------------------
+  // CHECK SUPABASE
+  // ---------------------------------------------------
+
   if (typeof window.supabase === "undefined") {
+
     console.error("Supabase JS library was not loaded.");
+
     return;
+
   }
+
+  // ---------------------------------------------------
+  // BLOG PAGE
+  // ---------------------------------------------------
 
   const onBlogPage = !!document.getElementById("blogsGrid");
 
   if (onBlogPage) {
+
     initTheme();
     initMobileMenu();
+
     await loadPublicBlogs();
 
     const backBtn = document.getElementById("backToBlogsList");
-    if (backBtn) backBtn.onclick = hideBlogDetail;
+
+    if (backBtn) {
+      backBtn.onclick = hideBlogDetail;
+    }
 
     return;
+
   }
 
-  // Marketplace page
-  await loadProducts();
+  // ---------------------------------------------------
+  // MARKETPLACE PAGE
+  // ---------------------------------------------------
+
+  try {
+
+    await loadProducts();
+
+  } catch (error) {
+
+    console.error("Product loading error:", error);
+
+  }
+
+  // ---------------------------------------------------
+  // INITIALIZE UI
+  // ---------------------------------------------------
 
   initTheme();
   initMobileMenu();
@@ -1244,43 +1302,78 @@ async function initApp() {
   initDashboard();
   initAdminAuth();
   initImagePreviews();
-  // MAIN NAVIGATION
-document.querySelectorAll(".nav-btn, .mobile-nav").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const view = btn.dataset.view;
 
-    if (view) {
-      showView(view);
-    }
-  });
-});
+  // ---------------------------------------------------
+  // OTHER NAVIGATION BUTTONS
+  // ---------------------------------------------------
 
+  const trigger = document.querySelector(
+    '[data-view-trigger="marketplace"]'
+  );
 
-
-
-
-  
-
-  const trigger = document.querySelector('[data-view-trigger="marketplace"]');
-  if (trigger) trigger.onclick = () => showView("marketplace");
-
-  const featuredViewMore = document.getElementById("featuredViewMore");
-  if (featuredViewMore) featuredViewMore.onclick = () => showView("marketplace");
-
-  const footerTermsLink = document.getElementById("footerTermsLink");
-  if (footerTermsLink) footerTermsLink.onclick = () => showView("terms");
-
-  const backFromTerms = document.getElementById("backFromTerms");
-  if (backFromTerms) backFromTerms.onclick = () => showView("home");
-
-  const admin = await checkAdminSession();
-  isAdmin = admin;
-
-  if (admin) {
-    await loadAdminData();
+  if (trigger) {
+    trigger.onclick = () => showView("marketplace");
   }
 
+  const featuredViewMore =
+    document.getElementById("featuredViewMore");
+
+  if (featuredViewMore) {
+    featuredViewMore.onclick = () =>
+      showView("marketplace");
+  }
+
+  const footerTermsLink =
+    document.getElementById("footerTermsLink");
+
+  if (footerTermsLink) {
+    footerTermsLink.onclick = () =>
+      showView("terms");
+  }
+
+  const backFromTerms =
+    document.getElementById("backFromTerms");
+
+  if (backFromTerms) {
+    backFromTerms.onclick = () =>
+      showView("home");
+  }
+
+  // ---------------------------------------------------
+  // ADMIN SESSION
+  // ---------------------------------------------------
+
+  try {
+
+    const admin = await checkAdminSession();
+
+    isAdmin = admin;
+
+    if (admin) {
+      await loadAdminData();
+    }
+
+  } catch (error) {
+
+    console.error("Admin session check error:", error);
+
+    isAdmin = false;
+
+  }
+
+  // ---------------------------------------------------
+  // SHOW CURRENT VIEW
+  // ---------------------------------------------------
+
   showView(currentView);
+
 }
+
+
+// Start application
+window.addEventListener("DOMContentLoaded", initApp);
+
+
+
 
 window.addEventListener("DOMContentLoaded", initApp);
