@@ -268,9 +268,38 @@ function initAdminAuth() {
       }
 
 form.reset();
+
 showToast("Successfully authenticated as Admin.");
+
 await loadAdminData();
+
 showView("dashboard");
+
+// Automatically open Products tab
+const productsTab = document.querySelector(
+  '.dash-tab[data-tab="products"]'
+);
+
+if (productsTab) {
+  productsTab.click();
+}
+
+// Automatically show Add Product form
+setTimeout(() => {
+
+  const productFormContainer =
+    document.getElementById("productFormContainer");
+
+  if (productFormContainer) {
+    resetProductForm();
+    productFormContainer.classList.remove("hidden");
+    productFormContainer.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  }
+
+}, 100);
 
 // Open Masters tab after login
 const mastersTab = document.querySelector(
