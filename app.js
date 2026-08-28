@@ -291,24 +291,22 @@ setTimeout(() => {
     document.getElementById("productFormContainer");
 
   if (productFormContainer) {
+
+    // Reset the form
     resetProductForm();
+
+    // Show Add Product form
     productFormContainer.classList.remove("hidden");
+
+    // Scroll to Add Product section
     productFormContainer.scrollIntoView({
       behavior: "smooth",
       block: "start"
     });
   }
 
-}, 100);
+}, 300);
 
-// Open Masters tab after login
-const mastersTab = document.querySelector(
-  '.dash-tab[data-tab="masters"]'
-);
-
-if (mastersTab) {
-  mastersTab.click();
-}
     });
   }
 
