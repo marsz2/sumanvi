@@ -268,9 +268,18 @@ function initAdminAuth() {
       }
 
       form.reset();
-      showToast("Successfully authenticated as Admin.");
-      await loadAdminData();
-      showView("dashboard");
+showToast("Successfully authenticated as Admin.");
+await loadAdminData();
+showView("dashboard");
+
+// Open Masters tab after login
+const mastersTab = document.querySelector(
+  '.dash-tab[data-tab="masters"]'
+);
+
+if (mastersTab) {
+  mastersTab.click();
+}
     });
   }
 
