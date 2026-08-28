@@ -267,7 +267,7 @@ function initAdminAuth() {
         return;
       }
 
-      form.reset();
+form.reset();
 showToast("Successfully authenticated as Admin.");
 await loadAdminData();
 showView("dashboard");
