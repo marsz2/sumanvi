@@ -1215,70 +1215,117 @@ Price: ${money(product.price)}`;
 // STARTUP
 // =====================================================
 
-// =====================================================
-// STARTUP
-// =====================================================
+function initMainNavigation() {
+
+  // Prevent duplicate initialization
+  if (window.__sumanviNavigationReady) return;
+
+  window.__sumanviNavigationReady = true;
+
+  // Event delegation:
+  // Admin / Home / Blog / Marketplace buttons will work
+  // even if Supabase or product loading has an error.
+  document.addEventListener("click", event => {
+
+    const button = event.target.closest(".nav-btn, .mobile-nav");
+
+    if (!button) return;
+
+    const view = button.dataset.view;
+
+    if (!view) return;
+
+    event.preventDefault();
+
+    showView(view);
+  });
+}
+
 
 async function initApp() {
 
-  // ---------------------------------------------------
-  // MAIN NAVIGATION
-  // Attach this FIRST so navigation works even if
-  // Supabase/data loading has an error.
-  // ---------------------------------------------------
+  // ===================================================
+  // 1. INITIALIZE NAVIGATION FIRST
+  // ===================================================
 
-  document.querySelectorAll(".nav-btn, .mobile-nav").forEach(btn => {
+  initMainNavigation();
 
-    btn.addEventListener("click", event => {
 
-      const view = btn.dataset.view;
+  // ===================================================
+  // 2. INITIALIZE BASIC UI
+  // ===================================================
 
-      if (view) {
-        showView(view);
-      }
-
-    });
-
-  });
-
-  // ---------------------------------------------------
-  // CHECK SUPABASE
-  // ---------------------------------------------------
-
-  if (typeof window.supabase === "undefined") {
-
-    console.error("Supabase JS library was not loaded.");
-
-    return;
-
+  try {
+    initTheme();
+  } catch (error) {
+    console.error("Theme initialization error:", error);
   }
 
-  // ---------------------------------------------------
-  // BLOG PAGE
-  // ---------------------------------------------------
+  try {
+    initMobileMenu();
+  } catch (error) {
+    console.error("Mobile menu initialization error:", error);
+  }
+
+  try {
+    initSearch();
+  } catch (error) {
+    console.error("Search initialization error:", error);
+  }
+
+  try {
+    initInquiry();
+  } catch (error) {
+    console.error("Inquiry initialization error:", error);
+  }
+
+  try {
+    initDashboard();
+  } catch (error) {
+    console.error("Dashboard initialization error:", error);
+  }
+
+  try {
+    initAdminAuth();
+  } catch (error) {
+    console.error("Admin authentication initialization error:", error);
+  }
+
+  try {
+    initImagePreviews();
+  } catch (error) {
+    console.error("Image preview initialization error:", error);
+  }
+
+
+  // ===================================================
+  // 3. CHECK IF THIS IS BLOG PAGE
+  // ===================================================
 
   const onBlogPage = !!document.getElementById("blogsGrid");
 
   if (onBlogPage) {
 
-    initTheme();
-    initMobileMenu();
+    try {
+      await loadPublicBlogs();
+    } catch (error) {
+      console.error("Blog loading error:", error);
+    }
 
-    await loadPublicBlogs();
-
-    const backBtn = document.getElementById("backToBlogsList");
+    const backBtn =
+      document.getElementById("backToBlogsList");
 
     if (backBtn) {
       backBtn.onclick = hideBlogDetail;
     }
 
     return;
-
   }
 
-  // ---------------------------------------------------
-  // MARKETPLACE PAGE
-  // ---------------------------------------------------
+
+  // ===================================================
+  // 4. LOAD PRODUCTS
+  // ===================================================
 
   try {
 
@@ -1290,90 +1337,144 @@ async function initApp() {
 
   }
 
-  // ---------------------------------------------------
-  // INITIALIZE UI
-  // ---------------------------------------------------
 
-  initTheme();
-  initMobileMenu();
-  initCarousel();
-  initSearch();
-  initInquiry();
-  initDashboard();
-  initAdminAuth();
-  initImagePreviews();
-
-  // ---------------------------------------------------
-  // OTHER NAVIGATION BUTTONS
-  // ---------------------------------------------------
-
-  const trigger = document.querySelector(
-    '[data-view-trigger="marketplace"]'
-  );
-
-  if (trigger) {
-    trigger.onclick = () => showView("marketplace");
-  }
-
-  const featuredViewMore =
-    document.getElementById("featuredViewMore");
-
-  if (featuredViewMore) {
-    featuredViewMore.onclick = () =>
-      showView("marketplace");
-  }
-
-  const footerTermsLink =
-    document.getElementById("footerTermsLink");
-
-  if (footerTermsLink) {
-    footerTermsLink.onclick = () =>
-      showView("terms");
-  }
-
-  const backFromTerms =
-    document.getElementById("backFromTerms");
-
-  if (backFromTerms) {
-    backFromTerms.onclick = () =>
-      showView("home");
-  }
-
-  // ---------------------------------------------------
-  // ADMIN SESSION
-  // ---------------------------------------------------
+  // ===================================================
+  // 5. INITIALIZE CAROUSEL
+  // ===================================================
 
   try {
 
-    const admin = await checkAdminSession();
+    initCarousel();
+
+  } catch (error) {
+
+    console.error(
+      "Carousel initialization error:",
+      error
+    );
+
+  }
+
+
+  // ===================================================
+  // 6. OTHER NAVIGATION
+  // ===================================================
+
+  const trigger =
+    document.querySelector(
+      '[data-view-trigger="marketplace"]'
+    );
+
+  if (trigger) {
+
+    trigger.onclick = () =>
+      showView("marketplace");
+
+  }
+
+
+  const featuredViewMore =
+    document.getElementById(
+      "featuredViewMore"
+    );
+
+  if (featuredViewMore) {
+
+    featuredViewMore.onclick = () =>
+      showView("marketplace");
+
+  }
+
+
+  const footerTermsLink =
+    document.getElementById(
+      "footerTermsLink"
+    );
+
+  if (footerTermsLink) {
+
+    footerTermsLink.onclick = () =>
+      showView("terms");
+
+  }
+
+
+  const backFromTerms =
+    document.getElementById(
+      "backFromTerms"
+    );
+
+  if (backFromTerms) {
+
+    backFromTerms.onclick = () =>
+      showView("home");
+
+  }
+
+
+  // ===================================================
+  // 7. CHECK ADMIN SESSION
+  // ===================================================
+
+  try {
+
+    const admin =
+      await checkAdminSession();
 
     isAdmin = admin;
 
     if (admin) {
+
       await loadAdminData();
+
     }
 
   } catch (error) {
 
-    console.error("Admin session check error:", error);
+    console.error(
+      "Admin session check error:",
+      error
+    );
 
     isAdmin = false;
 
   }
 
-  // ---------------------------------------------------
-  // SHOW CURRENT VIEW
-  // ---------------------------------------------------
 
-  showView(currentView);
+  // ===================================================
+  // 8. SHOW INITIAL VIEW
+  // ===================================================
+
+  try {
+
+    showView(currentView);
+
+  } catch (error) {
+
+    console.error(
+      "Initial view error:",
+      error
+    );
+
+  }
 
 }
 
 
-// Start application
-window.addEventListener("DOMContentLoaded", initApp);
+// =====================================================
+// START APPLICATION ONLY ONCE
+// =====================================================
 
+if (document.readyState === "loading") {
 
+  document.addEventListener(
+    "DOMContentLoaded",
+    initApp,
+    { once: true }
+  );
 
+} else {
 
-window.addEventListener("DOMContentLoaded", initApp);
+  initApp();
+
+}
