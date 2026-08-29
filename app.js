@@ -192,22 +192,61 @@ async function loadAdminData() {
   populateCategoryFilter();
 }
 
-async function checkAdminSession() {
-  const { data: userData } = await supabaseClient.auth.getUser();
-  const user = userData?.user;
+let lastAdminAuthError = "";
+
+async function checkAdminSession(userOverride = null) {
+  lastAdminAuthError = "";
+
+  let user = userOverride;
+
+  if (!user) {
+    const { data: userData, error: userError } = await supabaseClient.auth.getUser();
+
+    if (userError) {
+      lastAdminAuthError = userError.message || "Unable to read the authenticated user.";
+      console.error("Supabase getUser error:", userError);
+      isAdmin = false;
+      return false;
+    }
+
+    user = userData?.user;
+  }
 
   if (!user) {
     isAdmin = false;
     return false;
   }
 
+  // Primary authorization: the authenticated user's UUID must exist in
+  // public.admin_users. This is the recommended production setup.
   const { data, error } = await supabaseClient
     .from("admin_users")
     .select("user_id")
     .eq("user_id", user.id)
     .maybeSingle();
 
-  isAdmin = !error && !!data;
+  if (error) {
+    lastAdminAuthError = error.message || "Admin authorization check failed.";
+    console.error("admin_users authorization error:", error);
+  }
+
+  // Optional fallback: a Supabase Auth user can also be marked as admin
+  // through user metadata. This is useful when the admin_users SELECT policy
+  // has not yet been configured.
+  const metadataRole =
+    user.app_metadata?.role ||
+    user.user_metadata?.role ||
+    user.user_metadata?.user_role;
+
+  const metadataIsAdmin = String(metadataRole || "").toLowerCase() === "admin";
+
+  isAdmin = !!data || metadataIsAdmin;
+
+  if (!isAdmin && !lastAdminAuthError) {
+    lastAdminAuthError =
+      "Authenticated successfully, but this Supabase user is not registered as an admin.";
+  }
+
   return isAdmin;
 }
 
@@ -226,106 +265,130 @@ async function refreshAdminUI() {
 function initAdminAuth() {
   const form = document.getElementById("adminLoginForm");
 
-  if (form) {
+  if (form && !form.dataset.authBound) {
+    form.dataset.authBound = "true";
+
     form.addEventListener("submit", async event => {
       event.preventDefault();
 
-      const email = document.getElementById("loginUser").value.trim();
-      const password = document.getElementById("loginPassword").value;
+      const email = document.getElementById("loginUser")?.value.trim();
+      const password = document.getElementById("loginPassword")?.value || "";
       const errorBanner = document.getElementById("loginError");
+      const button = form.querySelector("button[type='submit']");
 
-      errorBanner.classList.add("hidden");
+      if (errorBanner) {
+        errorBanner.classList.add("hidden");
+        errorBanner.textContent = "";
+      }
 
       if (!email || !password) {
-        errorBanner.textContent = "Email and password are required.";
-        errorBanner.classList.remove("hidden");
+        if (errorBanner) {
+          errorBanner.textContent = "Email and password are required.";
+          errorBanner.classList.remove("hidden");
+        }
         return;
       }
 
-      const button = form.querySelector("button[type='submit']");
-      if (button) button.disabled = true;
-
-      const { error } = await supabaseClient.auth.signInWithPassword({
-        email,
-        password
-      });
-
-      if (button) button.disabled = false;
-
-      if (error) {
-        errorBanner.textContent = error.message;
-        errorBanner.classList.remove("hidden");
-        return;
+      if (button) {
+        button.disabled = true;
+        button.textContent = "Signing in...";
       }
 
-      const admin = await checkAdminSession();
+      try {
+        // Authenticate directly with Supabase Auth.
+        const { data: authData, error } =
+          await supabaseClient.auth.signInWithPassword({
+            email,
+            password
+          });
 
-      if (!admin) {
-        await supabaseClient.auth.signOut();
-        errorBanner.textContent = "This account is not authorized as an admin.";
-        errorBanner.classList.remove("hidden");
-        return;
+        if (error) throw error;
+
+        // IMPORTANT: use the user returned by signInWithPassword instead of
+        // calling getUser() from inside the auth-state callback. This avoids
+        // the race/deadlock that can make the page remain on Login.
+        const admin = await checkAdminSession(authData?.user || null);
+
+        if (!admin) {
+          await supabaseClient.auth.signOut();
+
+          throw new Error(
+            lastAdminAuthError ||
+            "Login successful, but this account is not authorized as an admin."
+          );
+        }
+
+        form.reset();
+        isAdmin = true;
+        currentView = "dashboard";
+
+        showToast("Successfully authenticated as Admin.");
+
+        // Load the admin data before displaying the dashboard.
+        await loadAdminData();
+
+        // Show the Overview tab exactly as the admin dashboard screenshot.
+        showView("dashboard");
+
+        const overviewTab = document.querySelector(
+          '.dash-tab[data-tab="overview"]'
+        );
+
+        if (overviewTab) {
+          overviewTab.click();
+        }
+      } catch (error) {
+        console.error("Admin login error:", error);
+
+        if (errorBanner) {
+          errorBanner.textContent = error.message || "Unable to sign in.";
+          errorBanner.classList.remove("hidden");
+        }
+      } finally {
+        if (button) {
+          button.disabled = false;
+          button.textContent = "Log In to Dashboard";
+        }
       }
-
-form.reset();
-
-showToast("Successfully authenticated as Admin.");
-
-await loadAdminData();
-
-showView("dashboard");
-
-// Automatically open Products tab
-const productsTab = document.querySelector(
-  '.dash-tab[data-tab="products"]'
-);
-
-if (productsTab) {
-  productsTab.click();
-}
-
-// Automatically show Add Product form
-setTimeout(() => {
-
-  const productFormContainer =
-    document.getElementById("productFormContainer");
-
-  if (productFormContainer) {
-
-    // Reset the form
-    resetProductForm();
-
-    // Show Add Product form
-    productFormContainer.classList.remove("hidden");
-
-    // Scroll to Add Product section
-    productFormContainer.scrollIntoView({
-      behavior: "smooth",
-      block: "start"
-    });
-  }
-
-}, 300);
-
     });
   }
 
   const logoutBtn = document.getElementById("adminLogoutBtn");
-  if (logoutBtn) {
+  if (logoutBtn && !logoutBtn.dataset.authBound) {
+    logoutBtn.dataset.authBound = "true";
+
     logoutBtn.addEventListener("click", async () => {
       await supabaseClient.auth.signOut();
       isAdmin = false;
+      currentView = "home";
       showView("home");
       showToast("Admin logged out.");
     });
   }
 
-  supabaseClient.auth.onAuthStateChange(async (_event, session) => {
+  // Do NOT await Supabase calls directly inside onAuthStateChange.
+  // Supabase can still be updating its internal auth state at that moment.
+  supabaseClient.auth.onAuthStateChange((_event, session) => {
     if (!session) {
       isAdmin = false;
       return;
     }
-    await checkAdminSession();
+
+    setTimeout(async () => {
+      try {
+        const admin = await checkAdminSession(session.user);
+        isAdmin = admin;
+
+        if (admin && currentView === "login") {
+          currentView = "dashboard";
+          await loadAdminData();
+          showView("dashboard");
+        }
+      } catch (error) {
+        console.error("Auth state check error:", error);
+        isAdmin = false;
+      }
+    }, 0);
   });
 }
 
@@ -1036,6 +1099,10 @@ function hideBlogDetail() {
     function showView(view) {
       if (view === "dashboard" && !isAdmin) {
         view = "login";
+      }
+
+      if (view === "login" && isAdmin) {
+        view = "dashboard";
       }
 
       currentView = view;
