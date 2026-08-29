@@ -51,6 +51,56 @@ function escapeHtml(value) {
     .replace(/'/g, "&#039;");
 }
 
+// =====================================================
+// TOAST NOTIFICATIONS
+// =====================================================
+function showToast(message, type = "success") {
+  // Create the toast container once. The current HTML does not contain
+  // a dedicated toast element, so this keeps the notification self-contained.
+  let container = document.getElementById("toastContainer");
+
+  if (!container) {
+    container = document.createElement("div");
+    container.id = "toastContainer";
+    container.style.position = "fixed";
+    container.style.top = "20px";
+    container.style.right = "20px";
+    container.style.zIndex = "99999";
+    container.style.display = "flex";
+    container.style.flexDirection = "column";
+    container.style.gap = "10px";
+    container.style.maxWidth = "min(420px, calc(100vw - 40px))";
+    document.body.appendChild(container);
+  }
+
+  const toast = document.createElement("div");
+  toast.textContent = message;
+  toast.style.padding = "14px 18px";
+  toast.style.borderRadius = "12px";
+  toast.style.fontFamily = "Manrope, sans-serif";
+  toast.style.fontSize = "14px";
+  toast.style.fontWeight = "700";
+  toast.style.color = "#ffffff";
+  toast.style.background = type === "error" ? "#b42318" : "#113967";
+  toast.style.boxShadow = "0 12px 30px rgba(0,0,0,0.18)";
+  toast.style.opacity = "0";
+  toast.style.transform = "translateY(-8px)";
+  toast.style.transition = "opacity .2s ease, transform .2s ease";
+
+  container.appendChild(toast);
+
+  requestAnimationFrame(() => {
+    toast.style.opacity = "1";
+    toast.style.transform = "translateY(0)";
+  });
+
+  setTimeout(() => {
+    toast.style.opacity = "0";
+    toast.style.transform = "translateY(-8px)";
+    setTimeout(() => toast.remove(), 220);
+  }, 3000);
+}
+
 function mapProduct(row) {
   return {
     id: row.id,
