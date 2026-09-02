@@ -20,7 +20,8 @@ const categories = [
 ];
 
 const currentConfig = {
-  whatsapp_number: "9511228208"
+  whatsapp_number: "9511228208",
+  whatsapp_community_url: "https://chat.whatsapp.com/BiejjHkJqSaLBaowqVvtIO"
 };
 
 // =====================================================
@@ -42,6 +43,33 @@ let carouselIndex = 0;
 // =====================================================
 // HELPERS
 // =====================================================
+function showToast(message, type = "success") {
+  let container = document.getElementById("toastContainer");
+
+  if (!container) {
+    container = document.createElement("div");
+    container.id = "toastContainer";
+    container.className = "jsk-toast-container";
+    container.setAttribute("aria-live", "polite");
+    container.setAttribute("aria-atomic", "true");
+    document.body.appendChild(container);
+  }
+
+  const toast = document.createElement("div");
+  toast.className = `jsk-toast jsk-toast-${type === "error" ? "error" : "success"}`;
+  toast.setAttribute("role", "status");
+  toast.textContent = String(message ?? "");
+
+  container.appendChild(toast);
+
+  requestAnimationFrame(() => toast.classList.add("is-visible"));
+
+  window.setTimeout(() => {
+    toast.classList.remove("is-visible");
+    window.setTimeout(() => toast.remove(), 250);
+  }, 3500);
+}
+
 function escapeHtml(value) {
   return String(value ?? "")
     .replace(/&/g, "&amp;")
@@ -49,56 +77,6 @@ function escapeHtml(value) {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
-}
-
-// =====================================================
-// TOAST NOTIFICATIONS
-// =====================================================
-function showToast(message, type = "success") {
-  // Create the toast container once. The current HTML does not contain
-  // a dedicated toast element, so this keeps the notification self-contained.
-  let container = document.getElementById("toastContainer");
-
-  if (!container) {
-    container = document.createElement("div");
-    container.id = "toastContainer";
-    container.style.position = "fixed";
-    container.style.top = "20px";
-    container.style.right = "20px";
-    container.style.zIndex = "99999";
-    container.style.display = "flex";
-    container.style.flexDirection = "column";
-    container.style.gap = "10px";
-    container.style.maxWidth = "min(420px, calc(100vw - 40px))";
-    document.body.appendChild(container);
-  }
-
-  const toast = document.createElement("div");
-  toast.textContent = message;
-  toast.style.padding = "14px 18px";
-  toast.style.borderRadius = "12px";
-  toast.style.fontFamily = "Manrope, sans-serif";
-  toast.style.fontSize = "14px";
-  toast.style.fontWeight = "700";
-  toast.style.color = "#ffffff";
-  toast.style.background = type === "error" ? "#b42318" : "#113967";
-  toast.style.boxShadow = "0 12px 30px rgba(0,0,0,0.18)";
-  toast.style.opacity = "0";
-  toast.style.transform = "translateY(-8px)";
-  toast.style.transition = "opacity .2s ease, transform .2s ease";
-
-  container.appendChild(toast);
-
-  requestAnimationFrame(() => {
-    toast.style.opacity = "1";
-    toast.style.transform = "translateY(0)";
-  });
-
-  setTimeout(() => {
-    toast.style.opacity = "0";
-    toast.style.transform = "translateY(-8px)";
-    setTimeout(() => toast.remove(), 220);
-  }, 3000);
 }
 
 function mapProduct(row) {
@@ -173,6 +151,132 @@ async function deleteStorageFile(bucket, path) {
   if (!path) return;
   const { error } = await supabaseClient.storage.from(bucket).remove([path]);
   if (error) console.warn("Storage delete warning:", error.message);
+}
+
+// =====================================================
+// WHATSAPP COMMUNITY POPUP
+// =====================================================
+function getWhatsAppCommunityUrl() {
+  const url = String(currentConfig.whatsapp_community_url || "").trim();
+  if (!url || url === "YOUR_WHATSAPP_COMMUNITY_LINK") return "";
+  return url;
+}
+
+function createWhatsAppCommunityPopup() {
+  if (document.getElementById("whatsappCommunityPopup")) return;
+
+  const popup = document.createElement("div");
+  popup.id = "whatsappCommunityPopup";
+  popup.className = "jsk-whatsapp-community-popup";
+  popup.setAttribute("role", "dialog");
+  popup.setAttribute("aria-modal", "true");
+  popup.setAttribute("aria-labelledby", "whatsappCommunityTitle");
+
+  popup.innerHTML = `
+    <div class="jsk-whatsapp-community-dialog">
+      <button id="closeWhatsAppCommunityPopup"
+        type="button"
+        aria-label="Close"
+        class="jsk-whatsapp-community-close">
+        <i data-lucide="x" class="h-5 w-5"></i>
+      </button>
+
+      <div class="jsk-whatsapp-community-icon">
+        <i data-lucide="message-circle" class="h-9 w-9"></i>
+      </div>
+
+      <div class="jsk-whatsapp-community-content">
+        <p class="jsk-whatsapp-community-eyebrow">WhatsApp Community</p>
+        <h2 id="whatsappCommunityTitle">Join our WhatsApp Community</h2>
+        <p>
+          Get product updates, offers, availability and B2B electrical marketplace updates directly on WhatsApp.
+        </p>
+      </div>
+
+      <div class="jsk-whatsapp-community-actions">
+        <a id="joinWhatsAppCommunityBtn"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="jsk-whatsapp-community-join">
+          <i data-lucide="message-circle" class="h-5 w-5"></i>
+          Join WhatsApp Community
+        </a>
+
+        <button id="notNowWhatsAppCommunityBtn"
+          type="button"
+          class="jsk-whatsapp-community-not-now">
+          Not Now
+        </button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(popup);
+
+  popup.addEventListener("click", event => {
+    if (event.target === popup) closeWhatsAppCommunityPopup();
+  });
+
+  document.getElementById("closeWhatsAppCommunityPopup")?.addEventListener(
+    "click",
+    closeWhatsAppCommunityPopup
+  );
+
+  document.getElementById("notNowWhatsAppCommunityBtn")?.addEventListener(
+    "click",
+    closeWhatsAppCommunityPopup
+  );
+
+  if (window.lucide) lucide.createIcons();
+}
+
+function openWhatsAppCommunityPopup() {
+  const communityUrl = getWhatsAppCommunityUrl();
+  if (!communityUrl) return;
+
+  createWhatsAppCommunityPopup();
+
+  const popup = document.getElementById("whatsappCommunityPopup");
+  const joinButton = document.getElementById("joinWhatsAppCommunityBtn");
+
+  if (!popup) return;
+  if (joinButton) joinButton.href = communityUrl;
+
+  popup.classList.add("is-open");
+  document.body.classList.add("jsk-popup-open");
+}
+
+function closeWhatsAppCommunityPopup() {
+  const popup = document.getElementById("whatsappCommunityPopup");
+  if (!popup) return;
+
+  popup.classList.remove("is-open");
+  document.body.classList.remove("jsk-popup-open");
+}
+
+function initWhatsAppCommunityPopup() {
+  createWhatsAppCommunityPopup();
+
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape") closeWhatsAppCommunityPopup();
+  });
+
+  // Supports any existing/new button or link with data-whatsapp-community.
+  document.addEventListener("click", event => {
+    const trigger = event.target.closest("[data-whatsapp-community]");
+    if (!trigger) return;
+
+    event.preventDefault();
+    openWhatsAppCommunityPopup();
+  });
+
+  // IMPORTANT:
+  // Do not use localStorage/sessionStorage/cookies here.
+  // The popup must appear again after every refresh on both desktop and mobile.
+  window.setTimeout(() => {
+    openWhatsAppCommunityPopup();
+  }, 700);
 }
 
 // =====================================================
@@ -482,6 +586,77 @@ function initImagePreviews() {
 }
 
 // =====================================================
+// PRODUCT SPECIFICATION ROWS
+// =====================================================
+function createSpecificationRow(label = "", value = "") {
+  const row = document.createElement("div");
+  row.className = "spec-row grid grid-cols-[1fr_1.35fr] gap-2";
+  row.innerHTML = `
+    <input type="text" class="spec-label w-full rounded-xl border border-slate-200 px-4 py-2 outline-none dark:bg-slate-700 dark:border-slate-600 dark:text-white" placeholder="Label (e.g. Power)" required>
+    <input type="text" class="spec-value w-full rounded-xl border border-slate-200 px-4 py-2 outline-none dark:bg-slate-700 dark:border-slate-600 dark:text-white" placeholder="Specification (e.g. 12W)" required>
+  `;
+  row.querySelector(".spec-label").value = label;
+  row.querySelector(".spec-value").value = value;
+  return row;
+}
+
+function addSpecificationRow(label = "", value = "") {
+  const container = document.getElementById("specRows");
+  if (!container) return;
+  container.appendChild(createSpecificationRow(label, value));
+}
+
+function resetSpecificationRows() {
+  const container = document.getElementById("specRows");
+  if (!container) return;
+  container.innerHTML = "";
+  addSpecificationRow();
+}
+
+function getSpecificationsFromForm() {
+  const container = document.getElementById("specRows");
+  const specs = {};
+  if (!container) return specs;
+
+  container.querySelectorAll(".spec-row").forEach(row => {
+    const label = row.querySelector(".spec-label")?.value.trim();
+    const value = row.querySelector(".spec-value")?.value.trim();
+    if (label && value) specs[label] = value;
+  });
+
+  return specs;
+}
+
+function setSpecificationsInForm(specs) {
+  const container = document.getElementById("specRows");
+  if (!container) return;
+
+  container.innerHTML = "";
+  const entries = specs && typeof specs === "object" && !Array.isArray(specs)
+    ? Object.entries(specs)
+    : [];
+
+  if (!entries.length) {
+    addSpecificationRow();
+    return;
+  }
+
+  entries.forEach(([label, value]) => addSpecificationRow(label, value));
+}
+
+function initSpecificationRows() {
+  const addButton = document.getElementById("addSpecRowBtn");
+  if (addButton) {
+    addButton.addEventListener("click", () => addSpecificationRow());
+  }
+
+  const container = document.getElementById("specRows");
+  if (container && !container.querySelector(".spec-row")) {
+    addSpecificationRow();
+  }
+}
+
+// =====================================================
 // ADMIN CRUD
 // =====================================================
 async function saveProduct(event) {
@@ -495,20 +670,12 @@ async function saveProduct(event) {
   const price = Number(document.getElementById("prodPrice").value);
   const offer = document.getElementById("prodOffer").value;
   const description = document.getElementById("prodDesc").value.trim();
-  const specsRaw = document.getElementById("prodSpecs").value.trim();
+  const specs = getSpecificationsFromForm();
   const featured = document.getElementById("prodFeatured").checked;
   const file = document.getElementById("prodImageFile")?.files?.[0];
 
-  if (!name || !category || !Number.isFinite(price) || !offer || !description || !specsRaw) {
-    alert("Please fill all required product fields.");
-    return;
-  }
-
-  let specs;
-  try {
-    specs = JSON.parse(specsRaw);
-  } catch {
-    alert("Specifications must be valid JSON.");
+  if (!name || !category || !Number.isFinite(price) || !offer || !description || !Object.keys(specs).length) {
+    alert("Please fill all required product fields and add at least one specification.");
     return;
   }
 
@@ -560,6 +727,7 @@ async function saveProduct(event) {
     }
 
     document.getElementById("adminProductForm").reset();
+    resetSpecificationRows();
     document.getElementById("prodId").value = "";
     document.getElementById("productFormContainer").classList.add("hidden");
     showToast(id ? "Product updated successfully." : "Product added successfully.");
@@ -704,7 +872,7 @@ function editProduct(id) {
   document.getElementById("prodPrice").value = p.price;
   document.getElementById("prodOffer").value = p.offer || "";
   document.getElementById("prodDesc").value = p.desc || "";
-  document.getElementById("prodSpecs").value = JSON.stringify(p.specs || {}, null, 2);
+  setSpecificationsInForm(p.specs || {});
   document.getElementById("prodFeatured").checked = !!p.featured;
   document.getElementById("prodImageFile").value = "";
 
@@ -735,6 +903,7 @@ function editBlog(id) {
 function resetProductForm() {
   const form = document.getElementById("adminProductForm");
   if (form) form.reset();
+  resetSpecificationRows();
   document.getElementById("prodId").value = "";
   document.getElementById("productFormTitle").textContent = "Add Product";
   document.getElementById("productFormContainer").classList.add("hidden");
@@ -852,6 +1021,8 @@ function initDashboard() {
       document.getElementById("productFormContainer").scrollIntoView({ behavior: "smooth" });
     };
   }
+
+  initSpecificationRows();
 
   const productForm = document.getElementById("adminProductForm");
   if (productForm) productForm.addEventListener("submit", saveProduct);
@@ -1430,6 +1601,12 @@ async function initApp() {
     initInquiry();
   } catch (error) {
     console.error("Inquiry initialization error:", error);
+  }
+
+  try {
+    initWhatsAppCommunityPopup();
+  } catch (error) {
+    console.error("WhatsApp Community popup initialization error:", error);
   }
 
   try {
