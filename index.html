@@ -254,6 +254,278 @@
       border-color: rgba(255,255,255,0.1);
     }
   </style>
+  <style>
+
+    /* WhatsApp Community popup - responsive on desktop and mobile */
+    body.jsk-popup-open {
+      overflow: hidden !important;
+    }
+
+    .jsk-whatsapp-community-popup {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      background: rgba(0, 0, 0, 0.52);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.22s ease, visibility 0.22s ease;
+      box-sizing: border-box;
+    }
+
+    .jsk-whatsapp-community-popup.is-open {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .jsk-whatsapp-community-dialog {
+      position: relative;
+      width: min(100%, 430px);
+      max-height: calc(100vh - 32px);
+      overflow: auto;
+      box-sizing: border-box;
+      padding: 28px 24px 24px;
+      border-radius: 28px;
+      background: #ffffff;
+      color: #122033;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.28);
+      transform: translateY(12px) scale(0.98);
+      transition: transform 0.22s ease;
+    }
+
+    .jsk-whatsapp-community-popup.is-open .jsk-whatsapp-community-dialog {
+      transform: translateY(0) scale(1);
+    }
+
+    .dark-mode .jsk-whatsapp-community-dialog {
+      background: #10243d;
+      color: #eef5ff;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .jsk-whatsapp-community-close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 40px;
+      height: 40px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 0;
+      border-radius: 999px;
+      background: transparent;
+      color: #64748b;
+      cursor: pointer;
+    }
+
+    .jsk-whatsapp-community-close:hover {
+      background: #f1f5f9;
+      color: #122033;
+    }
+
+    .dark-mode .jsk-whatsapp-community-close:hover {
+      background: rgba(255,255,255,0.08);
+      color: #ffffff;
+    }
+
+    .jsk-whatsapp-community-icon {
+      width: 68px;
+      height: 68px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 20px;
+      background: #ecfdf5;
+      color: #16a34a;
+    }
+
+    .dark-mode .jsk-whatsapp-community-icon {
+      background: rgba(22,163,74,0.15);
+      color: #4ade80;
+    }
+
+    .jsk-whatsapp-community-content {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .jsk-whatsapp-community-eyebrow {
+      margin: 0;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #26a69a;
+    }
+
+    .jsk-whatsapp-community-content h2 {
+      margin: 8px 0 0;
+      font-size: 25px;
+      line-height: 1.25;
+      font-weight: 800;
+      color: #10243d;
+    }
+
+    .dark-mode .jsk-whatsapp-community-content h2 {
+      color: #ffffff;
+    }
+
+    .jsk-whatsapp-community-content > p:last-child {
+      margin: 12px 0 0;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #64748b;
+    }
+
+    .dark-mode .jsk-whatsapp-community-content > p:last-child {
+      color: #94a3b8;
+    }
+
+    .jsk-whatsapp-community-actions {
+      display: grid;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .jsk-whatsapp-community-join,
+    .jsk-whatsapp-community-not-now {
+      min-height: 52px;
+      width: 100%;
+      box-sizing: border-box;
+      border-radius: 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 18px;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 800;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .jsk-whatsapp-community-join {
+      border: 1px solid #16a34a;
+      background: #16a34a;
+      color: #ffffff;
+    }
+
+    .jsk-whatsapp-community-join:hover {
+      background: #15803d;
+      border-color: #15803d;
+    }
+
+    .jsk-whatsapp-community-not-now {
+      border: 1px solid #e2e8f0;
+      background: #ffffff;
+      color: #334155;
+    }
+
+    .jsk-whatsapp-community-not-now:hover {
+      background: #f8fafc;
+    }
+
+    .dark-mode .jsk-whatsapp-community-not-now {
+      border-color: #334155;
+      background: #1e293b;
+      color: #ffffff;
+    }
+
+    .dark-mode .jsk-whatsapp-community-not-now:hover {
+      background: #273449;
+    }
+
+    @media (max-width: 480px) {
+      .jsk-whatsapp-community-popup {
+        padding: 12px;
+        align-items: center;
+      }
+
+      .jsk-whatsapp-community-dialog {
+        width: 100%;
+        max-height: calc(100vh - 24px);
+        padding: 24px 18px 18px;
+        border-radius: 24px;
+      }
+
+      .jsk-whatsapp-community-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 18px;
+      }
+
+      .jsk-whatsapp-community-content h2 {
+        font-size: 22px;
+      }
+
+      .jsk-whatsapp-community-content > p:last-child {
+        font-size: 13px;
+      }
+    }
+    /* Toast notifications used by app.js */
+    .jsk-toast-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 100000;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: min(380px, calc(100vw - 40px));
+      pointer-events: none;
+    }
+
+    .jsk-toast {
+      pointer-events: auto;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(148, 163, 184, 0.28);
+      box-shadow: 0 16px 40px rgba(15, 23, 42, 0.18);
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.45;
+      opacity: 0;
+      transform: translateY(-8px);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      background: #ffffff;
+      color: #122033;
+    }
+
+    .jsk-toast.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .jsk-toast-success {
+      border-color: rgba(16, 185, 129, 0.35);
+    }
+
+    .jsk-toast-error {
+      border-color: rgba(244, 63, 94, 0.35);
+    }
+
+    .dark-mode .jsk-toast {
+      background: #10243d;
+      color: #eef5ff;
+      border-color: rgba(129, 163, 207, 0.2);
+    }
+
+    @media (max-width: 480px) {
+      .jsk-toast-container {
+        top: 12px;
+        right: 12px;
+        width: calc(100vw - 24px);
+      }
+    }
+  </style>
   <style>body { box-sizing: border-box; }</style>
  </head>
  <body class="h-full w-full">
@@ -594,8 +866,17 @@
           </div>
           <div class="grid gap-4 sm:grid-cols-2">
            <div>
-            <label for="prodSpecs" class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-1">Specifications (JSON format)</label>
-            <textarea id="prodSpecs" required class="w-full rounded-xl border border-slate-200 px-4 py-2 outline-none h-20 font-mono text-xs dark:bg-slate-700 dark:border-slate-600 dark:text-white" placeholder='{"Power": "12W", "Warranty": "1 Year"}'></textarea>
+            <div class="mb-1 flex items-center justify-between gap-3">
+             <label class="block text-sm font-bold text-slate-700 dark:text-slate-300">Specifications</label>
+             <button type="button" id="addSpecRowBtn" class="focus-ring inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#26a69a] text-lg font-extrabold text-white shadow-sm transition hover:bg-[#1f877d]" aria-label="Add specification row" title="Add specification">+</button>
+            </div>
+            <div id="specRows" class="grid gap-2">
+             <div class="spec-row grid grid-cols-[1fr_1.35fr] gap-2">
+              <input type="text" class="spec-label w-full rounded-xl border border-slate-200 px-4 py-2 outline-none dark:bg-slate-700 dark:border-slate-600 dark:text-white" placeholder="Label (e.g. Power)" required>
+              <input type="text" class="spec-value w-full rounded-xl border border-slate-200 px-4 py-2 outline-none dark:bg-slate-700 dark:border-slate-600 dark:text-white" placeholder="Specification (e.g. 12W)" required>
+             </div>
+            </div>
+            <p class="mt-2 text-xs text-slate-500 dark:text-slate-400">Add as many specification rows as you need.</p>
            </div>
            <div class="flex items-center">
             <input type="checkbox" id="prodFeatured" class="h-5 w-5 rounded border-slate-200 text-[#113967]">
@@ -960,6 +1241,6 @@
   </div>
  
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="/app.js?v=20260829-auth-fix"></script>
+  <script src="/app.js?v=20260901-showtoast-fix"></script>
  </body>
 </html>
