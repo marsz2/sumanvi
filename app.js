@@ -4,7 +4,7 @@
 
 // REPLACE THESE TWO VALUES
 const SUPABASE_URL = "https://nuauobedjaonqzdlvjmt.supabase.co"; 
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZzdHFsdWRycm9rdWZzYmZuY3NkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc4MTc0MTQsImV4cCI6MjEwMzM5MzQxNH0.8DHquqGMwe6fD0T4SDanU48JWKpszNHuYAf7vbWpoYs";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im51YXVvYmVkamFvbnF6ZGx2am10Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMzNzA1MzUsImV4cCI6MjEwODk0NjUzNX0.M8dVvtqVlfBOCko1hzqe0Lp2XGGKGKOwQOJo51GCJB0";
 
 const supabaseClient = window.supabase.createClient(
   SUPABASE_URL,
